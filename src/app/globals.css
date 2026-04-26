@@ -1,26 +1,41 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@utility flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@utility flex-center-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* BREAKPOINT */
+  --breakpoint-extra-xl: 1440px;
+
+  --font-playfair: var(--font-playfair-display), sans-serif;
+  --font-inter: var(--font-inter), serif;
+
+  --color-primary-blue: var(--color-primary-blue);
+  --color-secondary-blue: var(--color-secondary-blue);
+  --color-background-main: var(--color-background-main);
+
+  --color-background-input: var(--color-background-input);
+  --color-focus-input: var(--color-focus-input);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --color-primary-blue: #05193c;
+  --color-secondary-blue: #73feff;
+  --color-background-main: #00030c;
+
+  --color-focus-input: #05193c;
+  --color-background-input: rgba(80, 80, 80, 0.1);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.dark {
 }
