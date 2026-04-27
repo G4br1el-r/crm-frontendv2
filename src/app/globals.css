@@ -39,3 +39,120 @@
 
 .dark {
 }
+
+/* === Marcadores do globo === */
+.globe-marker {
+  position: relative;
+  width: 12px;
+  height: 60px;
+  transform: translate(-50%, -100%);
+  pointer-events: auto;
+  cursor: pointer;
+  --marker-intensity: 0.5;
+}
+
+.globe-marker-beam {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(2px + var(--marker-intensity) * 2px);
+  height: calc(40px + var(--marker-intensity) * 40px);
+  background: linear-gradient(
+    to top,
+    rgba(147, 197, 253, calc(0.7 + var(--marker-intensity) * 0.3)) 0%,
+    rgba(96, 165, 250, calc(0.4 + var(--marker-intensity) * 0.4)) 30%,
+    rgba(96, 165, 250, 0.15) 70%,
+    rgba(96, 165, 250, 0) 100%
+  );
+  border-radius: 2px;
+  filter: blur(0.5px);
+  box-shadow:
+    0 0 calc(6px + var(--marker-intensity) * 8px) rgba(96, 165, 250, 0.8),
+    0 0 calc(12px + var(--marker-intensity) * 16px) rgba(96, 165, 250, 0.4),
+    0 0 calc(20px + var(--marker-intensity) * 20px) rgba(96, 165, 250, 0.2);
+  animation: beam-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes beam-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: translateX(-50%) scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scaleY(1.1);
+  }
+}
+
+.globe-marker-dot {
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(6px + var(--marker-intensity) * 6px);
+  height: calc(6px + var(--marker-intensity) * 6px);
+  border-radius: 50%;
+  background: #93c5fd;
+  box-shadow:
+    0 0 0 3px rgba(96, 165, 250, 0.3),
+    0 0 12px rgba(96, 165, 250, 0.9),
+    0 0 24px rgba(96, 165, 250, 0.5);
+  transition: transform 0.2s ease;
+}
+
+.globe-marker:hover .globe-marker-dot {
+  transform: translateX(-50%) scale(1.4);
+}
+
+.globe-marker:hover .globe-marker-beam {
+  filter: blur(0.3px);
+}
+
+.globe-marker-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: rgba(2, 6, 23, 0.92);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  z-index: 100;
+}
+
+.globe-marker:hover .globe-marker-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.globe-marker-id {
+  color: #60a5fa;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.globe-marker-name {
+  color: #f1f5f9;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.globe-marker-value {
+  color: #93c5fd;
+  font-size: 13px;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}

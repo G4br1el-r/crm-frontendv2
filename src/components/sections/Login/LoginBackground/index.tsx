@@ -9,7 +9,9 @@ export function LoginBackground() {
 
   useEffect(() => {
     if (window.innerWidth < 728) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (prefersReduced) return;
     setIsDesktop(true);
   }, []);
@@ -47,7 +49,7 @@ export function LoginBackground() {
         />
       )}
 
-      <div className="w-full md:h-dvh h-full absolute inset-0 bg-linear-to-l from-background-main via-background-main/90 to-background-main/80" />
+      <div className="w-full md:h-dvh h-full absolute inset-0 bg-linear-to-l from-background-main via-background-main/50 to-background-main/30" />
     </>
   );
 }
