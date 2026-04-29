@@ -43,7 +43,7 @@ export function InputWrapper({
       {children}
       {isPassword && Icon ? (
         <IconPassword
-          onMouseDown={(e) => e.preventDefault()}
+          onMouseDown={(e: { preventDefault: () => any }) => e.preventDefault()}
           onClick={() => onShowPassword?.(!showPassword)}
           aria-hidden="true"
           className={cn("w-5 h-5 shrink-0 cursor-pointer", classNameIcon)}

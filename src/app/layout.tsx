@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${inter.variable} ${playfairDisplay.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-background-main">{children}</body>
+      <body className="min-h-screen bg-background-main flex flex-col ">{children}</body>
     </html>
   );
 }

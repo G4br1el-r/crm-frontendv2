@@ -2,13 +2,9 @@
 
 import dynamic from "next/dynamic";
 
-const BrazilGlobe = dynamic(
-  () =>
-    import("@/components/sections/Dashboard/DashboardLayout").then(
-      (m) => m.BrazilGlobe,
-    ),
-  { ssr: false },
-);
+const BrazilGlobe = dynamic(() => import("@/components/sections/Dashboard/BrazilGlobe").then((m) => m.BrazilGlobe), {
+  ssr: false,
+});
 
 const mockData = [
   { id: "SP", name: "São Paulo", value: 1450000 },
@@ -42,17 +38,15 @@ const mockData = [
 
 export default function Page() {
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-[#020617]">
-      {/* Gradient de fundo (azul muito sutil no centro) */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(30,58,138,0.15)_0%,_transparent_60%)]" />
-
+    <section className="relative h-screen w-full overflow-hidden">
       <BrazilGlobe data={mockData} />
-
-      {/* Vinheta nas bordas */}
-      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,_transparent_35%,_rgba(2,6,23,0.6)_75%,_rgba(2,6,23,0.95)_100%)]" />
-
-      {/* Glow azulado sutil sobre o globo */}
-      <div className="pointer-events-none absolute inset-0 z-[5] bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.08)_0%,_transparent_40%)]" />
-    </main>
+      <div
+        className="absolute inset-0 z-10 pointer-events-none backdrop-blur-sm"
+        style={{
+          maskImage: "radial-gradient(circle at center, transparent 10%, black 50%)",
+          WebkitMaskImage: "radial-gradient(circle at center, transparent 10%, black 50%)",
+        }}
+      />
+    </section>
   );
 }
