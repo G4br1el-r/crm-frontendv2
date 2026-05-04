@@ -7,10 +7,10 @@ import { usePathname } from "next/navigation";
 import { ActivePageAnimation } from "./activePageAnimation";
 
 const NAV_ITEMS = {
-  dashboard: { icon: iconMap.charts, link: "/dashboard" },
-  customer: { icon: iconMap.user, link: "/customer" },
-  sales: { icon: iconMap.bag, link: "/sales" },
-  support: { icon: iconMap.headset, link: "/support" },
+  dashboard: { icon: iconMap.charts, link: "/dashboard", label: "Dashboard" },
+  customer: { icon: iconMap.user, link: "/customer", label: "Clientes" },
+  sales: { icon: iconMap.bag, link: "/sales", label: "Vendas" },
+  support: { icon: iconMap.headset, link: "/support", label: "SAC" },
 };
 
 export function NavItems() {
@@ -22,10 +22,10 @@ export function NavItems() {
         <Link href={item.link} key={key} aria-label={key}>
           <li className="flex-center justify-start gap-5 text-white cursor-pointer hover:scale-105 transition-all duration-300 h-13 relative p-4">
             <item.icon
-              className={cn("w-5 h-5 shrink-0 text-[#505050]", activePage === item.link && "text-blue-neon")}
+              className={cn("w-5 h-5 shrink-0 text-gray-light/50", activePage === item.link && "text-blue-neon")}
               aria-hidden="true"
             />
-            <span className="hidden group-hover:block">{key}</span>
+            <span className="hidden group-hover:block">{item.label}</span>
             {activePage === item.link && <ActivePageAnimation />}
           </li>
         </Link>

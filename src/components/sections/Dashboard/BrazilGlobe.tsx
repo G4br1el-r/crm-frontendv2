@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 "use client";
 
+import { formatBRL } from "@/lib/utils/format-currency";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
@@ -69,8 +70,8 @@ const INTRO = {
 // CONFIG: CÂMERA
 // ============================================
 const CAMERA = {
-  lat: -8.5, // Latitude final da câmera (vertical: menos negativo = Brasil mais alto na tela)
-  lng: -54.0, // Longitude final da câmera (horizontal: menos negativo = Brasil mais à esquerda)
+  lat: -14.5, // Latitude final da câmera (vertical: menos negativo = Brasil mais alto na tela)
+  lng: -34.0, // Longitude final da câmera (horizontal: menos negativo = Brasil mais à esquerda)
   altitude: 1.4, // Distância final da câmera (menor = mais zoom no Brasil)
   minDistance: 140, // Limite mínimo de zoom permitido pelo usuário (quão perto pode aproximar)
   maxDistance: 200, // Limite máximo de zoom permitido pelo usuário (quão longe pode afastar)
@@ -149,12 +150,6 @@ const STATE_COORDINATES: Record<string, [number, number]> = {
 // ============================================
 // HELPERS
 // ============================================
-const formatBRL = (value: number) =>
-  value.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    maximumFractionDigits: 0,
-  });
 
 const debounce = <T extends (...args: any[]) => void>(fn: T, ms: number) => {
   let timer: ReturnType<typeof setTimeout>;
@@ -299,6 +294,16 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
       cancelled = true;
     };
   }, [dataMap]);
+
+  useEffect(() => {
+    const globe = globeRef.current;
+    if (!globe || !Globe) return;
+    if (polygons.length === 0) {
+      globe.pauseAnimation?.();
+    } else {
+      globe.resumeAnimation?.();
+    }
+  }, [Globe, polygons.length]);
 
   useEffect(() => {
     if (!globeRef.current || !Globe) return;

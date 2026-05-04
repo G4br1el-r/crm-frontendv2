@@ -20,10 +20,17 @@
   --font-inter: var(--font-inter), serif;
 
   --color-primary-blue: var(--color-primary-blue);
+  --color-blue-dark: var(--color-blue-dark);
   --color-secondary-blue: var(--color-secondary-blue);
   --color-primary-blue-dark: var(--color-primary-blue-dark);
   --color-background-main: var(--color-background-main);
   --color-blue-neon: var(--color-blue-neon);
+  --color-green-neon: var(--color-green-neon);
+  --color-green-dark: var(--color-green-dark);
+  --color-red-neon: var(--color-red-neon);
+  --color-red-dark: var(--color-red-dark);
+
+  --color-gray-light: var(--color-gray-light);
 
   --color-background-input: var(--color-background-input);
   --color-background-content: var(--color-background-content);
@@ -32,10 +39,17 @@
 
 :root {
   --color-primary-blue: #05193c;
+  --color-blue-dark: #060e1d;
   --color-secondary-blue: #73feff;
   --color-primary-blue-dark: #000511;
   --color-background-main: #00030c;
   --color-blue-neon: #00329e;
+  --color-green-neon: #11ff00;
+  --color-green-dark: #0b1d0f;
+  --color-red-neon: #ff0000;
+  --color-red-dark: #1d0b0b;
+
+  --color-gray-light: #505050;
 
   --color-focus-input: #05193c;
   --color-background-input: rgba(80, 80, 80, 0.1);
@@ -46,5 +60,5 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-x: hidden;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { InputComponent } from "@/components/ui/InputComponent";
+import Link from "next/link";
 import { useState } from "react";
 
 export function LoginInputs() {
@@ -38,12 +39,13 @@ export function LoginInputs() {
         </InputComponent.wrapper>
       </InputComponent.root>
 
-      <button
+      <Link
         type="submit"
-        className="bg-primary-blue w-full h-10 rounded-[10px] text-white active:scale-95 cursor-pointer transition-all duration-300 hover:scale-105 focus:outline-none focus:scale-105"
+        className="bg-primary-blue w-full h-10 rounded-[10px] text-white active:scale-95 cursor-pointer transition-all duration-300 hover:scale-105 focus:outline-none focus:scale-105 flex items-center justify-center"
+        href="/dashboard"
       >
         Acessar portal
-      </button>
+      </Link>
     </form>
   );
 }

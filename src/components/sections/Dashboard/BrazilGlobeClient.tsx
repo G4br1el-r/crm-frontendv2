@@ -1,0 +1,59 @@
+"use client";
+
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+
+const BrazilGlobe = dynamic(() => import("@/components/sections/Dashboard/BrazilGlobe").then((m) => m.BrazilGlobe), {
+  ssr: false,
+});
+
+interface StateData {
+  id: string;
+  name: string;
+  value: number;
+}
+
+interface Props {
+  data: StateData[];
+  /**
+   * Atraso (ms) após o evento `load` da window antes de montar o globo.
+   * Serve pra cobrir a animação de entrada do dashboard sem competir por thread.
+   */
+  mountDelayMs?: number;
+}
+
+export function BrazilGlobeClient({ data, mountDelayMs = 2000 }: Props) {
+  const [shouldMount, setShouldMount] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const scheduleMount = () => {
+      timeoutId = setTimeout(() => {
+        if (!cancelled) setShouldMount(true);
+      }, mountDelayMs);
+    };
+
+    if (document.readyState === "complete") {
+      scheduleMount();
+      return () => {
+        cancelled = true;
+        if (timeoutId) clearTimeout(timeoutId);
+      };
+    }
+
+    const onLoad = () => scheduleMount();
+    window.addEventListener("load", onLoad, { once: true });
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener("load", onLoad);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [mountDelayMs]);
+
+  if (!shouldMount) return null;
+
+  return <BrazilGlobe data={data} />;
+}

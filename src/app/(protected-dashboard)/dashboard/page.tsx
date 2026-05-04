@@ -1,10 +1,11 @@
-"use client";
-
-import dynamic from "next/dynamic";
-
-const BrazilGlobe = dynamic(() => import("@/components/sections/Dashboard/BrazilGlobe").then((m) => m.BrazilGlobe), {
-  ssr: false,
-});
+import { BrazilGlobeClient } from "@/components/sections/Dashboard/BrazilGlobeClient";
+import { BarChartDashboard } from "@/components/sections/Dashboard/ChartsComponents/barChartDashboard";
+import { BestCustomers } from "@/components/sections/Dashboard/ChartsComponents/bestCustomers";
+import { DonutChartDashboard } from "@/components/sections/Dashboard/ChartsComponents/donnutChartDashboard";
+import { Kpi } from "@/components/sections/Dashboard/ChartsComponents/kpi";
+import { RecentSales } from "@/components/sections/Dashboard/ChartsComponents/recentSales";
+import { TopProducts } from "@/components/sections/Dashboard/ChartsComponents/topProducts";
+import { StaggerContainer, StaggerItem } from "@/components/ui/Motion/StaggerAnimation";
 
 const mockData = [
   { id: "SP", name: "São Paulo", value: 1450000 },
@@ -36,17 +37,56 @@ const mockData = [
   { id: "RR", name: "Roraima", value: 15000 },
 ];
 
-export default function Page() {
+export default async function Dashboard() {
   return (
-    <section className="relative h-screen w-full overflow-hidden">
-      <BrazilGlobe data={mockData} />
-      <div
-        className="absolute inset-0 z-10 pointer-events-none backdrop-blur-sm"
-        style={{
-          maskImage: "radial-gradient(circle at center, transparent 10%, black 50%)",
-          WebkitMaskImage: "radial-gradient(circle at center, transparent 10%, black 50%)",
-        }}
-      />
+    <section className="relative h-full w-full overflow-hidden">
+      <div className="absolute left-230">
+        <BrazilGlobeClient data={mockData} />
+      </div>
+
+      <div className="relative pl-15 py-3 pr-3 z-10 w-full h-full pointer-events-none">
+        <StaggerContainer
+          staggerDelay={0.12}
+          delayChildren={0.2}
+          className="flex gap-4 w-full h-full relative flex-col"
+        >
+          <div className="flex-center gap-4">
+            <StaggerItem fadeDirection="up" className="w-full">
+              <Kpi title="Receita Total" percent={58.32} value={48321.49} successDisplay isMoney />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-full">
+              <Kpi title="Descontos Concedidos" percent={-67.7} value={12808.42} successDisplay isMoney />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-full">
+              <Kpi title="Ticket Médio" percent={-108.7} value={1184.63} isMoney />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-full">
+              <Kpi title="Total de Clientes" percent={7.7} value={35} successDisplay />
+            </StaggerItem>
+          </div>
+
+          <div className="w-9/14 flex-1 h-full flex gap-4">
+            <StaggerItem fadeDirection="up" className="w-full h-full">
+              <BarChartDashboard />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-2/3 h-full">
+              <DonutChartDashboard />
+            </StaggerItem>
+          </div>
+
+          <div className="w-9/14 flex-1 min-h-0 flex gap-4">
+            <StaggerItem fadeDirection="up" className="w-1/3 h-full">
+              <RecentSales />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-1/3 h-full">
+              <TopProducts />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-1/3 h-full">
+              <BestCustomers />
+            </StaggerItem>
+          </div>
+        </StaggerContainer>
+      </div>
     </section>
   );
 }
