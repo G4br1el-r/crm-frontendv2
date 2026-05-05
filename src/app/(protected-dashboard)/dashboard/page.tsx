@@ -44,7 +44,7 @@ export default async function Dashboard() {
         <BrazilGlobeClient data={mockData} />
       </div>
 
-      <div className="relative pl-15 py-3 pr-3 z-10 w-full h-full pointer-events-none">
+      <div className="relative pt-20 extraxl:pl-15 extraxl:py-3 extraxl:pr-3 z-10 w-full h-full pointer-events-none">
         <StaggerContainer
           staggerDelay={0.12}
           delayChildren={0.2}
@@ -74,6 +74,28 @@ export default async function Dashboard() {
             </StaggerItem>
           </div>
 
+          <div className="w-9/14 flex-1 min-h-0 flex gap-4">
+            <StaggerItem fadeDirection="up" className="w-1/3 h-full">
+              <RecentSales />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-1/3 h-full">
+              <TopProducts />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-1/3 h-full">
+              <BestCustomers />
+            </StaggerItem>
+          </div>
+          <div className="w-9/14 flex-1 min-h-0 flex gap-4">
+            <StaggerItem fadeDirection="up" className="w-1/3 h-full">
+              <RecentSales />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-1/3 h-full">
+              <TopProducts />
+            </StaggerItem>
+            <StaggerItem fadeDirection="up" className="w-1/3 h-full">
+              <BestCustomers />
+            </StaggerItem>
+          </div>
           <div className="w-9/14 flex-1 min-h-0 flex gap-4">
             <StaggerItem fadeDirection="up" className="w-1/3 h-full">
               <RecentSales />

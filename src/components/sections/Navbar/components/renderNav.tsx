@@ -25,7 +25,7 @@ export function NavItems() {
               className={cn("w-5 h-5 shrink-0 text-gray-light/50", activePage === item.link && "text-blue-neon")}
               aria-hidden="true"
             />
-            <span className="hidden group-hover:block">{item.label}</span>
+            <span>{item.label}</span>
             {activePage === item.link && <ActivePageAnimation />}
           </li>
         </Link>
