@@ -1,9 +1,9 @@
 "use client";
 
-import { iconMap } from "@/lib/utils/iconsMap";
-import { cn } from "@/lib/utils/twMerge";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { iconMap } from "@/lib/utils/iconsMap";
+import { cn } from "@/lib/utils/twMerge";
 import { ActivePageAnimation } from "./activePageAnimation";
 
 const NAV_ITEMS = {

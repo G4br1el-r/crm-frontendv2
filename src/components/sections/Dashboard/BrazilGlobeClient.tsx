@@ -1,11 +1,18 @@
 "use client";
 
+import { useIsMobile } from "@/hook/useIsMobile";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-const BrazilGlobe = dynamic(() => import("@/components/sections/Dashboard/BrazilGlobe").then((m) => m.BrazilGlobe), {
-  ssr: false,
-});
+const BrazilGlobe = dynamic(
+  () =>
+    import("@/components/sections/Dashboard/BrazilGlobe").then(
+      (m) => m.BrazilGlobe,
+    ),
+  {
+    ssr: false,
+  },
+);
 
 interface StateData {
   id: string;
@@ -15,15 +22,12 @@ interface StateData {
 
 interface Props {
   data: StateData[];
-  /**
-   * Atraso (ms) após o evento `load` da window antes de montar o globo.
-   * Serve pra cobrir a animação de entrada do dashboard sem competir por thread.
-   */
   mountDelayMs?: number;
 }
 
 export function BrazilGlobeClient({ data, mountDelayMs = 2000 }: Props) {
   const [shouldMount, setShouldMount] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     let cancelled = false;
@@ -53,7 +57,12 @@ export function BrazilGlobeClient({ data, mountDelayMs = 2000 }: Props) {
     };
   }, [mountDelayMs]);
 
+  if (isMobile) return null;
   if (!shouldMount) return null;
 
-  return <BrazilGlobe data={data} />;
+  return (
+    <div className="absolute left-230">
+      <BrazilGlobe data={data} />
+    </div>
+  );
 }

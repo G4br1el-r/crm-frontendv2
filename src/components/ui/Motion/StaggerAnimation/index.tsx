@@ -63,7 +63,12 @@ export function StaggerContainer({
   );
 }
 
-export function StaggerItem({ children, fadeDirection = "up", fadeValue = 20, className }: StaggerItemProps) {
+export function StaggerItem({
+  children,
+  fadeDirection = "up",
+  fadeValue = 20,
+  className,
+}: StaggerItemProps) {
   return (
     <motion.div
       variants={itemVariants(fadeDirection, fadeValue)}

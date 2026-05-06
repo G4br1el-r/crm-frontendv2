@@ -4,9 +4,9 @@ import { FadeAnimation } from "@/components/ui/Motion/FadeAnimation";
 
 export function LoginWrapper() {
   return (
-    <div className="w-full h-full p-5 absolute bg-background-main/50 flex-center z-10 bottom-0 backdrop-blur-md extra-xl:backdrop-blur-none extra-xl:justify-end extra-xl:pr-10 2xl:pr-15">
+    <div className="w-full h-full p-5 absolute bg-background-main/50 flex-center z-10 bottom-0 backdrop-blur-md xl:backdrop-blur-none xl:justify-end xl:pr-10 2xl:pr-20">
       <FadeAnimation
-        className="w-full px-5 pb-20 pt-0 flex-center-column gap-7 rounded-md max-w-xl"
+        className="w-full px-5 pb-20 pt-0 flex-center-column gap-7 rounded-md max-w-lg"
         fadeDirection="up"
         fadeValue={100}
         transitionDuration={0.8}
