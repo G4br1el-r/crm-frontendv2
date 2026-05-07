@@ -4,15 +4,9 @@ import { useIsMobile } from "@/hook/useIsMobile";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-const BrazilGlobe = dynamic(
-  () =>
-    import("@/components/sections/Dashboard/BrazilGlobe").then(
-      (m) => m.BrazilGlobe,
-    ),
-  {
-    ssr: false,
-  },
-);
+const BrazilGlobe = dynamic(() => import("@/components/sections/Dashboard/BrazilGlobe").then((m) => m.BrazilGlobe), {
+  ssr: false,
+});
 
 interface StateData {
   id: string;
