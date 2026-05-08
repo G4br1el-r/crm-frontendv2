@@ -18,13 +18,25 @@ const TOKENS = {
 function DonutLabel({ value }: { value: number }) {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-      <span className="text-3xl font-medium text-white leading-none">{value.toFixed(1)}%</span>
-      <span className="text-[11px] text-zinc-400 mt-1.5 tracking-wider">CONVERSÃO</span>
+      <span className="text-3xl font-medium text-white leading-none">
+        {value.toFixed(1)}%
+      </span>
+      <span className="text-[11px] text-zinc-400 mt-1.5 tracking-wider">
+        CONVERSÃO
+      </span>
     </div>
   );
 }
 
-function StatCard({ label, value, variant }: { label: string; value: number; variant: "success" | "danger" }) {
+function StatCard({
+  label,
+  value,
+  variant,
+}: {
+  label: string;
+  value: number;
+  variant: "success" | "danger";
+}) {
   const isSuccess = variant === "success";
   const Icon = isSuccess ? CheckCircle : XCircle;
 
@@ -35,12 +47,20 @@ function StatCard({ label, value, variant }: { label: string; value: number; var
         ${isSuccess ? "bg-green-950/30 border-green-800/40" : "bg-red-950/30 border-red-800/40"}
       `}
     >
-      <Icon size={22} strokeWidth={1.5} className={isSuccess ? "text-green-500" : "text-red-500"} />
+      <Icon
+        size={22}
+        strokeWidth={1.5}
+        className={isSuccess ? "text-green-500" : "text-red-500"}
+      />
       <div className="flex flex-col gap-0.5">
-        <span className={`text-[11px] font-semibold tracking-widest ${isSuccess ? "text-green-500" : "text-red-500"}`}>
+        <span
+          className={`text-[11px] font-semibold tracking-widest ${isSuccess ? "text-green-500" : "text-red-500"}`}
+        >
           {label}
         </span>
-        <span className={`text-3xl font-semibold leading-none ${isSuccess ? "text-green-500" : "text-red-500"}`}>
+        <span
+          className={`text-3xl font-semibold leading-none ${isSuccess ? "text-green-500" : "text-red-500"}`}
+        >
           {value}
         </span>
       </div>
@@ -48,7 +68,11 @@ function StatCard({ label, value, variant }: { label: string; value: number; var
   );
 }
 
-export function DonutChartDashboard({ value = CONVERSION_RATE }: { value?: number }) {
+export function DonutChartDashboard({
+  value = CONVERSION_RATE,
+}: {
+  value?: number;
+}) {
   const data = [
     { name: "Convertido", value: value },
     { name: "Não convertido", value: 100 - value },
@@ -86,8 +110,16 @@ export function DonutChartDashboard({ value = CONVERSION_RATE }: { value?: numbe
         </div>
 
         <div className="flex gap-3 shrink-0">
-          <StatCard label={STATS.success.label} value={STATS.success.value} variant="success" />
-          <StatCard label={STATS.cancelled.label} value={STATS.cancelled.value} variant="danger" />
+          <StatCard
+            label={STATS.success.label}
+            value={STATS.success.value}
+            variant="success"
+          />
+          <StatCard
+            label={STATS.cancelled.label}
+            value={STATS.cancelled.value}
+            variant="danger"
+          />
         </div>
       </div>
     </div>

@@ -4,9 +4,15 @@ import { useIsMobile } from "@/hook/useIsMobile";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-const BrazilGlobe = dynamic(() => import("@/components/sections/Dashboard/BrazilGlobe").then((m) => m.BrazilGlobe), {
-  ssr: false,
-});
+const BrazilGlobe = dynamic(
+  () =>
+    import("@/components/sections/Dashboard/BrazilGlobe").then(
+      (m) => m.BrazilGlobe,
+    ),
+  {
+    ssr: false,
+  },
+);
 
 interface StateData {
   id: string;
@@ -17,9 +23,14 @@ interface StateData {
 interface Props {
   data: StateData[];
   mountDelayMs?: number;
+  onReady?: () => void;
 }
 
-export function BrazilGlobeClient({ data, mountDelayMs = 2000 }: Props) {
+export function BrazilGlobeClient({
+  data,
+  mountDelayMs = 2000,
+  onReady,
+}: Props) {
   const [shouldMount, setShouldMount] = useState(false);
   const isMobile = useIsMobile();
 
@@ -51,12 +62,12 @@ export function BrazilGlobeClient({ data, mountDelayMs = 2000 }: Props) {
     };
   }, [mountDelayMs]);
 
+  useEffect(() => {
+    if (isMobile) onReady?.();
+  }, [isMobile, onReady]);
+
   if (isMobile) return null;
   if (!shouldMount) return null;
 
-  return (
-    <div className="absolute left-230">
-      <BrazilGlobe data={data} />
-    </div>
-  );
+  return <BrazilGlobe data={data} onReady={onReady} />;
 }

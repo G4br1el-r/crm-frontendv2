@@ -1,7 +1,15 @@
 "use client";
 
-import { Activity } from "lucide-react";
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Activity, Globe } from "lucide-react";
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { motion } from "motion/react";
 
 interface MonthRevenue {
   month: string;
@@ -21,18 +29,45 @@ const BAR_COLOR_START = "#00329e";
 const BAR_COLOR_END = "#05193c";
 const AXIS_TICK_COLOR = "#FFF";
 
-export function BarChartDashboard() {
+type Props = {
+  onGlobeExpand: () => void;
+};
+
+export function BarChartDashboard({ onGlobeExpand }: Props) {
   return (
     <div className="w-full h-full bg-blue-dark/50 backdrop-blur-xs rounded-[10px] py-2.5 px-5 pointer-events-auto flex flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <div className="bg-blue-neon/20 border border-blue-neon w-fit h-fit p-1 rounded-[5px]">
-          <Activity className="text-blue-neon p-1" />
+      <div className="flex items-center gap-2 justify-between">
+        <div className="flex-center gap-2">
+          <div className="bg-blue-neon/20 border border-blue-neon w-fit h-fit p-1 rounded-[5px]">
+            <Activity className="text-blue-neon p-1" />
+          </div>
+          <span className="text-white">Evolução Financeira</span>
         </div>
-        <span className="text-white">Evolução Financeira</span>
+
+        <motion.button
+          type="button"
+          onClick={onGlobeExpand}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-neon/40 bg-blue-neon/10 text-blue-neon text-sm backdrop-blur-sm hover:bg-blue-neon/20 transition-colors cursor-pointer group"
+        >
+          <span className="animate-globe-wiggle inline-block">
+            <Globe size={15} className="text-blue-neon" />
+          </span>
+          <span>Ver no Globo</span>
+          <span className="text-blue-neon/60 text-xs animate-arrow-nudge inline-block">
+            →
+          </span>
+        </motion.button>
       </div>
+
       <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={DATA} barCategoryGap="30%" style={{ outline: "none" }}>
+          <BarChart
+            data={DATA}
+            barCategoryGap="30%"
+            style={{ outline: "none" }}
+          >
             <defs>
               <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={BAR_COLOR_START} stopOpacity={1} />
@@ -40,7 +75,12 @@ export function BarChartDashboard() {
               </linearGradient>
             </defs>
 
-            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: AXIS_TICK_COLOR, fontSize: 13 }} />
+            <XAxis
+              dataKey="month"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: AXIS_TICK_COLOR, fontSize: 13 }}
+            />
 
             <YAxis
               axisLine={false}
@@ -50,7 +90,10 @@ export function BarChartDashboard() {
             />
 
             <Tooltip
-              formatter={(value) => [`R$ ${Number(value).toLocaleString("pt-BR")}`, "Faturamento"]}
+              formatter={(value) => [
+                `R$ ${Number(value).toLocaleString("pt-BR")}`,
+                "Faturamento",
+              ]}
               cursor={{ fill: "transparent" }}
             />
 
@@ -58,8 +101,8 @@ export function BarChartDashboard() {
               dataKey="revenue"
               fill="url(#barGradient)"
               radius={[4, 4, 0, 0]}
-              animationBegin={600}
-              animationDuration={1200}
+              animationBegin={200}
+              animationDuration={600}
             />
           </BarChart>
         </ResponsiveContainer>

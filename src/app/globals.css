@@ -13,9 +13,17 @@
   flex-direction: column;
 }
 
-@theme inline {
+@theme {
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
   --breakpoint-extraxl: 1440px;
+  --breakpoint-3xl: 1920px;
+}
 
+@theme inline {
   --font-playfair: var(--font-playfair-display), sans-serif;
   --font-inter: var(--font-inter), serif;
 
@@ -61,4 +69,35 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+}
+
+@keyframes globe-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(20deg);
+  }
+  75% {
+    transform: rotate(-20deg);
+  }
+}
+
+.animate-globe-wiggle {
+  animation: globe-wiggle 3s ease-in-out infinite;
+}
+
+@keyframes arrow-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
+
+.animate-arrow-nudge {
+  animation: arrow-nudge 1.5s ease-in-out infinite;
 }

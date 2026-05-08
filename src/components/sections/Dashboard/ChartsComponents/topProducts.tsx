@@ -10,11 +10,36 @@ interface Product {
 }
 
 const PRODUCTS: Product[] = [
-  { name: "DEUS CONOSCO DIA A DIA - (ASSINATURA)", value: 28041.35, orders: 11, units: 520 },
-  { name: "DEUS CONOSCO DIA A DIA LETRAS GRANDES - (ASSINATURA)", value: 1038.6, orders: 3, units: 8 },
-  { name: "FOLHETO DEUS CONOSCO MENSAGEM - MARCO - (29/03/26)", value: 200.0, orders: 2, units: 800 },
-  { name: "FOLHETO DEUS CONOSCO MENSAGEM - ABRIL - (03/04/26)", value: 200.0, orders: 2, units: 800 },
-  { name: "FOLHETO DEUS CONOSCO MENSAGEM - ABRIL - (04/04/26)", value: 200.0, orders: 2, units: 800 },
+  {
+    name: "DEUS CONOSCO DIA A DIA - (ASSINATURA)",
+    value: 28041.35,
+    orders: 11,
+    units: 520,
+  },
+  {
+    name: "DEUS CONOSCO DIA A DIA LETRAS GRANDES - (ASSINATURA)",
+    value: 1038.6,
+    orders: 3,
+    units: 8,
+  },
+  {
+    name: "FOLHETO DEUS CONOSCO MENSAGEM - MARCO - (29/03/26)",
+    value: 200.0,
+    orders: 2,
+    units: 800,
+  },
+  {
+    name: "FOLHETO DEUS CONOSCO MENSAGEM - ABRIL - (03/04/26)",
+    value: 200.0,
+    orders: 2,
+    units: 800,
+  },
+  {
+    name: "FOLHETO DEUS CONOSCO MENSAGEM - ABRIL - (04/04/26)",
+    value: 200.0,
+    orders: 2,
+    units: 800,
+  },
 ];
 
 function Rank({ index }: { index: number }) {
@@ -36,18 +61,30 @@ function ProgressBar({ percent }: { percent: number }) {
   );
 }
 
-function ProductRow({ product, index, maxValue }: { product: Product; index: number; maxValue: number }) {
+function ProductRow({
+  product,
+  index,
+  maxValue,
+}: {
+  product: Product;
+  index: number;
+  maxValue: number;
+}) {
   const percent = (product.value / maxValue) * 100;
 
   return (
     <div className="flex items-center gap-3 py-2.5 border-b border-white/5 last:border-b-0">
       <Rank index={index} />
       <div className="flex flex-col flex-1 min-w-0 gap-1.5">
-        <span className="text-[12px] text-white truncate uppercase">{product.name}</span>
+        <span className="text-[12px] text-white truncate uppercase">
+          {product.name}
+        </span>
         <ProgressBar percent={percent} />
       </div>
       <div className="flex flex-col items-end shrink-0">
-        <span className="text-[13px] text-white font-medium">{formatBRL(product.value)}</span>
+        <span className="text-[13px] text-white font-medium">
+          {formatBRL(product.value)}
+        </span>
         <div className="flex items-center gap-2 text-[10px] text-gray-light/80 tabular-nums">
           <span># {product.orders}</span>
           <span>◷ {product.units} un.</span>

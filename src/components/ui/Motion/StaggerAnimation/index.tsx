@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useMemo } from "react";
 
 type FadeDirection = "down" | "up" | "left" | "right" | "none";
 
@@ -18,8 +19,10 @@ interface StaggerItemProps {
   className?: string;
 }
 
-// Variants do container — não anima nada, só orquestra
-const containerVariants = (staggerDelay: number, delayChildren: number) => ({
+const buildContainerVariants = (
+  staggerDelay: number,
+  delayChildren: number,
+) => ({
   hidden: {},
   visible: {
     transition: {
@@ -29,21 +32,27 @@ const containerVariants = (staggerDelay: number, delayChildren: number) => ({
   },
 });
 
-// Variants do item — animate via herança do parent
-const itemVariants = (direction: FadeDirection, fadeValue: number) => {
-  const directionMap: Record<FadeDirection, { x?: number; y?: number }> = {
-    down: { y: -fadeValue },
-    up: { y: fadeValue },
-    left: { x: fadeValue },
-    right: { x: -fadeValue },
-    none: {},
-  };
+const DIRECTION_MAP: Record<FadeDirection, { x?: number; y?: number }> = {
+  down: { y: -1 },
+  up: { y: 1 },
+  left: { x: 1 },
+  right: { x: -1 },
+  none: {},
+};
 
+const buildItemVariants = (direction: FadeDirection, fadeValue: number) => {
+  const offset = DIRECTION_MAP[direction];
   return {
-    hidden: { opacity: 0, ...directionMap[direction] },
+    hidden: {
+      opacity: 0,
+      ...(offset.x != null ? { x: offset.x * fadeValue } : {}),
+      ...(offset.y != null ? { y: offset.y * fadeValue } : {}),
+    },
     visible: { opacity: 1, x: 0, y: 0 },
   };
 };
+
+const ITEM_TRANSITION = { duration: 0.4, ease: "easeOut" } as const;
 
 export function StaggerContainer({
   children,
@@ -51,9 +60,13 @@ export function StaggerContainer({
   delayChildren = 0,
   className,
 }: StaggerContainerProps) {
+  const variants = useMemo(
+    () => buildContainerVariants(staggerDelay, delayChildren),
+    [staggerDelay, delayChildren],
+  );
   return (
     <motion.div
-      variants={containerVariants(staggerDelay, delayChildren)}
+      variants={variants}
       initial="hidden"
       animate="visible"
       className={className}
@@ -69,10 +82,14 @@ export function StaggerItem({
   fadeValue = 20,
   className,
 }: StaggerItemProps) {
+  const variants = useMemo(
+    () => buildItemVariants(fadeDirection, fadeValue),
+    [fadeDirection, fadeValue],
+  );
   return (
     <motion.div
-      variants={itemVariants(fadeDirection, fadeValue)}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      variants={variants}
+      transition={ITEM_TRANSITION}
       className={className}
     >
       {children}

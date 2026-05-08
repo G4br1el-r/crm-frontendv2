@@ -10,7 +10,13 @@ interface KpiProps {
   isMoney?: boolean;
 }
 
-export function Kpi({ title, percent, value, isMoney, successDisplay }: KpiProps) {
+export function Kpi({
+  title,
+  percent,
+  value,
+  isMoney,
+  successDisplay,
+}: KpiProps) {
   const srcBackground = successDisplay
     ? "/dashboard/chart-background-green.webp"
     : "/dashboard/chart-background-red.webp";
@@ -19,7 +25,11 @@ export function Kpi({ title, percent, value, isMoney, successDisplay }: KpiProps
 
   return (
     <div className="h-40 w-full bg-blue-dark/50 backdrop-blur-xs border-t-2 border-t-blue-neon rounded-[10px] p-2.5 flex flex-col justify-between items-start overflow-hidden">
-      <ImageComponent src={srcBackground} alt="Grafico" classNameWrapper="w-full h-20 absolute bottom-0 left-0 -z-1" />
+      <ImageComponent
+        src={srcBackground}
+        alt="Grafico"
+        classNameWrapper="w-full h-20 absolute bottom-0 left-0 -z-1"
+      />
       <div className="flex flex-col gap-2">
         <span className="text-gray-light/50 text-2xl">{title}</span>
         <div

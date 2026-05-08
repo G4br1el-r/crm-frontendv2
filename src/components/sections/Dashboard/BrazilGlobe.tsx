@@ -1,9 +1,9 @@
 /** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
 "use client";
 
-import { formatBRL } from "@/lib/utils/format-currency";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import * as THREE from "three";
+import { Color, MeshPhongMaterial } from "three";
+import { GlobeTooltip, type GlobeTooltipHandle } from "./GlobeTooltip";
 
 // ============================================
 // TIPOS
@@ -21,15 +21,10 @@ interface GlobeArc {
   endLng: number;
 }
 
-interface HoveredState {
-  id: string;
-  name: string;
-  value: number;
-}
-
 interface Props {
   data: StateData[];
   onStateClick?: (state: StateData) => void;
+  onReady?: () => void;
 }
 
 // ============================================
@@ -71,7 +66,7 @@ const INTRO = {
 // ============================================
 const CAMERA = {
   lat: -14.5, // Latitude final da câmera (vertical: menos negativo = Brasil mais alto na tela)
-  lng: -34.0, // Longitude final da câmera (horizontal: menos negativo = Brasil mais à esquerda)
+  lng: -50.0, // Longitude final da câmera (horizontal: menos negativo = Brasil mais à esquerda)
   altitude: 1.4, // Distância final da câmera (menor = mais zoom no Brasil)
   minDistance: 140, // Limite mínimo de zoom permitido pelo usuário (quão perto pode aproximar)
   maxDistance: 200, // Limite máximo de zoom permitido pelo usuário (quão longe pode afastar)
@@ -171,19 +166,25 @@ const fetchGeoJson = async (url: string) => {
 // ============================================
 // COMPONENTE
 // ============================================
-export function BrazilGlobe({ data, onStateClick }: Props) {
+export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
   const globeRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const tooltipRef = useRef<HTMLDivElement>(null);
+  const tooltipRef = useRef<GlobeTooltipHandle>(null);
 
   const [Globe, setGlobe] = useState<any>(null);
-  const [arcs, setArcs] = useState<GlobeArc[]>([]);
   const [polygons, setPolygons] = useState<any[]>([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [hovered, setHovered] = useState<HoveredState | null>(null);
   const [statesElevated, setStatesElevated] = useState(!INTRO.enabled);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-  const hoveredIdRef = useRef<string | null>(null);
+  const readyFiredRef = useRef(false);
+
+  useEffect(() => {
+    if (readyFiredRef.current) return;
+    if (!Globe || polygons.length === 0) return;
+    readyFiredRef.current = true;
+    requestAnimationFrame(() => onReady?.());
+  }, [Globe, polygons.length, onReady]);
 
   const dataMap = useMemo(() => {
     const map = new Map<string, number>();
@@ -211,9 +212,9 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
   }, [dataMap, maxValue]);
 
   const globeMaterial = useMemo(() => {
-    const material = new THREE.MeshPhongMaterial({
-      color: new THREE.Color(COLORS.globe),
-      emissive: new THREE.Color(COLORS.globeEmissive),
+    const material = new MeshPhongMaterial({
+      color: new Color(COLORS.globe),
+      emissive: new Color(COLORS.globeEmissive),
       emissiveIntensity: GLOBE.emissiveIntensity,
       shininess: GLOBE.shininess,
     });
@@ -248,8 +249,7 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!tooltipRef.current) return;
-      tooltipRef.current.style.transform = `translate3d(${e.clientX + 16}px, ${e.clientY + 16}px, 0)`;
+      tooltipRef.current?.move(e.clientX, e.clientY);
     };
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
@@ -258,42 +258,42 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
   useEffect(() => {
     let cancelled = false;
 
-    Promise.all([fetchGeoJson("/world-countries.geojson"), fetchGeoJson("/brazil-states.geojson")]).then(
-      ([world, brazil]) => {
-        if (cancelled) return;
+    Promise.all([
+      fetchGeoJson("/world-countries.geojson"),
+      fetchGeoJson("/brazil-states.geojson"),
+    ]).then(([world, brazil]) => {
+      if (cancelled) return;
 
-        const brazilFeatures = brazil.features.map((f: any) => ({
-          ...f,
-          properties: { ...f.properties, isBrazilState: true },
-        }));
+      const brazilFeatures = brazil.features.map((f: any) => ({
+        ...f,
+        properties: { ...f.properties, isBrazilState: true },
+      }));
 
-        const worldWithoutBrazil = world.features.filter(
-          (f: any) => f.properties.NAME !== "Brazil" && f.properties.ADMIN !== "Brazil",
-        );
+      const worldWithoutBrazil = world.features.filter(
+        (f: any) =>
+          f.properties.NAME !== "Brazil" && f.properties.ADMIN !== "Brazil",
+      );
 
-        const allPolygons = [...worldWithoutBrazil, ...brazilFeatures];
-
-        const hubCoords = STATE_COORDINATES[ARCS.hubState];
-        const calculatedArcs: GlobeArc[] = hubCoords
-          ? Object.entries(STATE_COORDINATES)
-              .filter(([sigla]) => sigla !== ARCS.hubState)
-              .map(([, coords]) => ({
-                startLat: hubCoords[1],
-                startLng: hubCoords[0],
-                endLat: coords[1],
-                endLng: coords[0],
-              }))
-          : [];
-
-        setPolygons(allPolygons);
-        setArcs(calculatedArcs);
-      },
-    );
+      setPolygons([...worldWithoutBrazil, ...brazilFeatures]);
+    });
 
     return () => {
       cancelled = true;
     };
-  }, [dataMap]);
+  }, []);
+
+  const arcsData = useMemo<GlobeArc[]>(() => {
+    const hubCoords = STATE_COORDINATES[ARCS.hubState];
+    if (!hubCoords) return [];
+    return Object.entries(STATE_COORDINATES)
+      .filter(([sigla]) => sigla !== ARCS.hubState)
+      .map(([, coords]) => ({
+        startLat: hubCoords[1],
+        startLng: hubCoords[0],
+        endLat: coords[1],
+        endLng: coords[0],
+      }));
+  }, []);
 
   useEffect(() => {
     const globe = globeRef.current;
@@ -378,9 +378,11 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
     (feat: any) => {
       if (!feat.properties.isBrazilState) return POLYGON.worldAltitude;
       if (!statesElevated) return POLYGON.worldAltitude;
-      return hoveredIdRef.current === feat.properties.sigla ? GLOBE.brazilLiftHover : GLOBE.brazilLift;
+      return hoveredId === feat.properties.sigla
+        ? GLOBE.brazilLiftHover
+        : GLOBE.brazilLift;
     },
-    [statesElevated, hovered],
+    [statesElevated, hoveredId],
   );
 
   const polygonCapColor = useCallback(
@@ -390,26 +392,29 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
       const cached = polygonStyleCache.get(sigla);
       if (!cached) return COLORS.world;
 
-      if (hoveredIdRef.current === sigla) {
+      if (hoveredId === sigla) {
         const hoverAlpha = Math.min(cached.alpha + 0.2, 1);
         return `rgba(${COLORS.brazilHover.r}, ${COLORS.brazilHover.g}, ${COLORS.brazilHover.b}, ${hoverAlpha})`;
       }
       return cached.color;
     },
-    [polygonStyleCache, hovered],
+    [polygonStyleCache, hoveredId],
   );
 
   const polygonSideColor = useCallback(
-    (feat: any) => (feat.properties.isBrazilState ? COLORS.brazilSide : "rgba(0,0,0,0)"),
+    (feat: any) =>
+      feat.properties.isBrazilState ? COLORS.brazilSide : "rgba(0,0,0,0)",
     [],
   );
 
   const polygonStrokeColor = useCallback(
     (feat: any) => {
       if (!feat.properties.isBrazilState) return COLORS.worldStroke;
-      return hoveredIdRef.current === feat.properties.sigla ? COLORS.brazilStrokeHover : COLORS.brazilStroke;
+      return hoveredId === feat.properties.sigla
+        ? COLORS.brazilStrokeHover
+        : COLORS.brazilStroke;
     },
-    [hovered],
+    [hoveredId],
   );
 
   const arcColor = useMemo(() => () => [COLORS.arcStart, COLORS.arcEnd], []);
@@ -417,9 +422,9 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
   const handlePolygonHover = useCallback(
     (feat: any) => {
       if (!feat || !feat.properties.isBrazilState) {
-        if (hoveredIdRef.current !== null) {
-          hoveredIdRef.current = null;
-          setHovered(null);
+        if (hoveredId !== null) {
+          setHoveredId(null);
+          tooltipRef.current?.hide();
           if (containerRef.current) {
             containerRef.current.style.cursor = "default";
           }
@@ -428,17 +433,21 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
       }
 
       const sigla = feat.properties.sigla;
-      if (hoveredIdRef.current === sigla) return;
+      if (hoveredId === sigla) return;
 
-      hoveredIdRef.current = sigla;
+      setHoveredId(sigla);
       const value = dataMap.get(sigla) ?? 0;
-      setHovered({ id: sigla, name: feat.properties.name, value });
+      tooltipRef.current?.show({
+        id: sigla,
+        name: feat.properties.name,
+        value,
+      });
 
       if (containerRef.current) {
         containerRef.current.style.cursor = "pointer";
       }
     },
-    [dataMap],
+    [dataMap, hoveredId],
   );
 
   const handlePolygonClick = useCallback(
@@ -475,7 +484,7 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
         polygonsTransitionDuration={INTRO.liftAnimationDuration}
         onPolygonHover={handlePolygonHover}
         onPolygonClick={handlePolygonClick}
-        arcsData={arcs}
+        arcsData={arcsData}
         arcStartLat="startLat"
         arcStartLng="startLng"
         arcEndLat="endLat"
@@ -490,19 +499,7 @@ export function BrazilGlobe({ data, onStateClick }: Props) {
         arcAltitudeAutoScale={ARCS.altitudeAutoScale}
       />
 
-      <div
-        ref={tooltipRef}
-        className="pointer-events-none fixed left-0 top-0 z-50 will-change-transform"
-        style={{ display: hovered ? "block" : "none" }}
-      >
-        {hovered && (
-          <div className="rounded-md border border-blue-400/40 bg-slate-950/95 px-4 py-3 shadow-lg backdrop-blur-md">
-            <div className="text-[10px] font-medium uppercase tracking-[1.5px] text-blue-400">{hovered.id}</div>
-            <div className="mt-1 text-sm font-medium text-slate-100">{hovered.name}</div>
-            <div className="mt-1.5 text-xs tabular-nums text-blue-300">{formatBRL(hovered.value)}</div>
-          </div>
-        )}
-      </div>
+      <GlobeTooltip ref={tooltipRef} />
     </div>
   );
 }

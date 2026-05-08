@@ -1,11 +1,4 @@
-import { BrazilGlobeClient } from "@/components/sections/Dashboard/BrazilGlobeClient";
-import { BarChartDashboard } from "@/components/sections/Dashboard/ChartsComponents/barChartDashboard";
-import { BestCustomers } from "@/components/sections/Dashboard/ChartsComponents/bestCustomers";
-import { DonutChartDashboard } from "@/components/sections/Dashboard/ChartsComponents/donnutChartDashboard";
-import { Kpi } from "@/components/sections/Dashboard/ChartsComponents/kpi";
-import { RecentSales } from "@/components/sections/Dashboard/ChartsComponents/recentSales";
-import { TopProducts } from "@/components/sections/Dashboard/ChartsComponents/topProducts";
-import { StaggerContainer, StaggerItem } from "@/components/ui/Motion/StaggerAnimation";
+import { DashboardShell } from "@/components/sections/Dashboard/DashboardShell";
 
 const mockData = [
   { id: "SP", name: "São Paulo", value: 1450000 },
@@ -39,57 +32,8 @@ const mockData = [
 
 export default async function Dashboard() {
   return (
-    <section className="relative h-full w-full overflow-x-hidden">
-      <BrazilGlobeClient data={mockData} />
-
-      {/* <div className="relative pt-20 extraxl:pl-15 extraxl:py-3 extraxl:pr-3 z-10 w-full h-full pointer-events-none"> */}
-      <div className="w-full h-full relative p-2 pt-20 xl:pl-15 xl:py-3 xl:pr-3 z-10">
-        <StaggerContainer
-          staggerDelay={0.12}
-          delayChildren={0.2}
-          className="flex gap-4 w-full h-full relative flex-col"
-        >
-          {/* <div className="flex-center gap-4"> */}
-          <div className="flex-center gap-4 flex-center-column sm:grid sm:grid-cols-2 lg:grid-cols-4">
-            <StaggerItem fadeDirection="up" className="w-full">
-              <Kpi title="Receita Total" percent={58.32} value={48321.49} successDisplay isMoney />
-            </StaggerItem>
-            <StaggerItem fadeDirection="up" className="w-full">
-              <Kpi title="Descontos Concedidos" percent={-67.7} value={12808.42} successDisplay isMoney />
-            </StaggerItem>
-            <StaggerItem fadeDirection="up" className="w-full">
-              <Kpi title="Ticket Médio" percent={-108.7} value={1184.63} isMoney />
-            </StaggerItem>
-            <StaggerItem fadeDirection="up" className="w-full">
-              <Kpi title="Total de Clientes" percent={7.7} value={35} successDisplay />
-            </StaggerItem>
-          </div>
-
-          {/* <div className="w-9/14 flex-1 h-full flex gap-4"> */}
-          <div className="w-full flex gap-4 flex-center-column lg:grid lg:grid-cols-2 h-200 lg:h-100 overflow-hidden">
-            <StaggerItem fadeDirection="up" className="w-full h-full">
-              <BarChartDashboard />
-            </StaggerItem>
-            {/* <StaggerItem fadeDirection="up" className="w-2/3 h-full"> */}
-            <StaggerItem fadeDirection="up" className="w-full h-full">
-              <DonutChartDashboard />
-            </StaggerItem>
-          </div>
-
-          {/* <div className="w-9/14 flex-1 min-h-0 flex gap-4"> */}
-          <div className="w-full flex gap-4 flex-center-column lg:grid lg:grid-cols-3">
-            <StaggerItem fadeDirection="up" className="w-full h-full">
-              <RecentSales />
-            </StaggerItem>
-            <StaggerItem fadeDirection="up" className="w-full h-full">
-              <TopProducts />
-            </StaggerItem>
-            <StaggerItem fadeDirection="up" className="w-full h-full">
-              <BestCustomers />
-            </StaggerItem>
-          </div>
-        </StaggerContainer>
-      </div>
+    <section className="relative h-full w-full overflow-hidden">
+      <DashboardShell data={mockData} />
     </section>
   );
 }

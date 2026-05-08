@@ -8,7 +8,7 @@ export default function LayoutDashboard({
   return (
     <section className="flex w-full min-h-dvh">
       <Navbar />
-      <main className="w-full min-h-dvh overflow-auto">{children}</main>
+      <main className="w-full min-h-dvh overflow-auto ">{children}</main>
     </section>
   );
 }

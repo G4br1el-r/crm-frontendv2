@@ -13,11 +13,36 @@ interface Sale {
 }
 
 const SALES: Sale[] = [
-  { customer: "Wender Dalber Lima", date: "16 de mar, 16:08", value: 99.6, status: "completed" },
-  { customer: "Maria Valne Alves", date: "02 de mar, 17:42", value: 99.6, status: "completed" },
-  { customer: "Paróquia de São Judas Tadeu", date: "02 de mar, 17:35", value: 378.47, status: "completed" },
-  { customer: "Paróquia de São Judas Tadeu", date: "02 de mar, 17:29", value: 350.0, status: "cancelled" },
-  { customer: "Marilete Auxiliadora Longatti", date: "02 de mar, 17:13", value: 135.9, status: "completed" },
+  {
+    customer: "Wender Dalber Lima",
+    date: "16 de mar, 16:08",
+    value: 99.6,
+    status: "completed",
+  },
+  {
+    customer: "Maria Valne Alves",
+    date: "02 de mar, 17:42",
+    value: 99.6,
+    status: "completed",
+  },
+  {
+    customer: "Paróquia de São Judas Tadeu",
+    date: "02 de mar, 17:35",
+    value: 378.47,
+    status: "completed",
+  },
+  {
+    customer: "Paróquia de São Judas Tadeu",
+    date: "02 de mar, 17:29",
+    value: 350.0,
+    status: "cancelled",
+  },
+  {
+    customer: "Marilete Auxiliadora Longatti",
+    date: "02 de mar, 17:13",
+    value: 135.9,
+    status: "completed",
+  },
 ];
 
 const STATUS_LABELS: Record<SaleStatus, string> = {
@@ -30,7 +55,9 @@ function StatusDot({ status }: { status: SaleStatus }) {
     <span
       className={cn(
         "h-2 w-2 rounded-full shrink-0",
-        status === "completed" ? "bg-blue-neon shadow-[0_0_6px_#00329e]" : "bg-red-neon shadow-[0_0_6px_#ff0000]",
+        status === "completed"
+          ? "bg-blue-neon shadow-[0_0_6px_#00329e]"
+          : "bg-red-neon shadow-[0_0_6px_#ff0000]",
       )}
     />
   );
@@ -59,7 +86,9 @@ function SaleRow({ sale }: { sale: Sale }) {
         <span className="text-[11px] text-gray-light/80">{sale.date}</span>
       </div>
       <div className="flex flex-col items-end shrink-0">
-        <span className="text-[13px] text-white font-medium">{formatBRL(sale.value)}</span>
+        <span className="text-[13px] text-white font-medium">
+          {formatBRL(sale.value)}
+        </span>
         <StatusLabel status={sale.status} />
       </div>
     </div>
