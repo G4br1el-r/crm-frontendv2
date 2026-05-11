@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   StaggerContainer,
@@ -14,9 +13,17 @@ import { TopProducts } from "./ChartsComponents/topProducts";
 import { BestCustomers } from "./ChartsComponents/bestCustomers";
 import { cn } from "@/lib/utils/twMerge";
 
-export function DashboardContent() {
-  const [globeExpanded, setGlobeExpanded] = useState(false);
+interface Props {
+  globeExpanded: boolean;
+  onExpand: () => void;
+  onCollapse: () => void;
+}
 
+export function DashboardContent({
+  globeExpanded,
+  onExpand,
+  onCollapse,
+}: Props) {
   return (
     <div
       className={cn(
@@ -27,7 +34,7 @@ export function DashboardContent() {
       <AnimatePresence mode="wait">
         {!globeExpanded && (
           <motion.div
-            className="w-full h-full"
+            className="w-full h-full relative"
             key="dashboard-content"
             initial={{ opacity: 1, y: 0 }}
             exit={{
@@ -91,14 +98,12 @@ export function DashboardContent() {
                 </StaggerItem>
               </div>
 
-              <div className="w-full flex gap-4 flex-center-column flex-1 min-h-180 md:min-h-100 overflow-hidden pointer-events-none md:grid md:grid-cols-2 extraxl:grid-cols-3">
+              <div className="w-full flex gap-4 flex-center-column flex-1 min-h-180 md:min-h-95 overflow-hidden pointer-events-none md:grid md:grid-cols-2 extraxl:grid-cols-3">
                 <StaggerItem
                   fadeDirection="up"
                   className="w-full h-full pointer-events-auto extraxl:col-span-2"
                 >
-                  <BarChartDashboard
-                    onGlobeExpand={() => setGlobeExpanded(true)}
-                  />
+                  <BarChartDashboard onGlobeExpand={onExpand} />
                 </StaggerItem>
                 <StaggerItem
                   fadeDirection="up"
@@ -141,8 +146,8 @@ export function DashboardContent() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.3 }}
-            onClick={() => setGlobeExpanded(false)}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-90 flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-neon/10 border border-blue-neon/40 text-blue-neon text-sm backdrop-blur-sm hover:bg-blue-neon/20 transition-colors cursor-pointer pointer-events-auto"
+            onClick={onCollapse}
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-90 flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary-blue/10 border border-secondary-blue/40 text-secondary-blue text-sm backdrop-blur-sm hover:bg-secondary-blue/20 transition-colors cursor-pointer pointer-events-auto"
           >
             ← Voltar ao dashboard
           </motion.button>

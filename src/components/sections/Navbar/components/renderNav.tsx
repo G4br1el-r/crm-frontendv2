@@ -20,9 +20,17 @@ export function NavItems() {
     <ul className="flex flex-col w-full">
       {Object.entries(NAV_ITEMS).map(([key, item]) => (
         <Link href={item.link} key={key} aria-label={key}>
-          <li className="flex-center justify-start gap-5 text-white cursor-pointer hover:scale-105 transition-all duration-300 h-13 relative p-4">
+          <li
+            className={cn(
+              "flex-center justify-start gap-5 text-white cursor-pointer transition-all duration-300 h-13 relative p-4",
+              activePage !== item.link && " hover:scale-105",
+            )}
+          >
             <item.icon
-              className={cn("w-5 h-5 shrink-0 text-gray-light/50", activePage === item.link && "text-blue-neon")}
+              className={cn(
+                "w-5 h-5 shrink-0 text-gray-light/50",
+                activePage === item.link && "text-blue-neon",
+              )}
               aria-hidden="true"
             />
             <span>{item.label}</span>

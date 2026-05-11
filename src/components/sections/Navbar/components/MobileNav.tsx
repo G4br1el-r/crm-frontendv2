@@ -67,7 +67,7 @@ export function MobileNav() {
             <NavItems />
           </LayoutGroup>
         </div>
-        <div className="flex-center justify-start text-white cursor-pointer h-13 relative w-full ml-4 gap-2">
+        <div className="flex-center justify-start text-white cursor-pointer h-13 relative w-full ml-4 gap-4">
           <div className="w-11 h-11 shrink-0">
             <ImageComponent
               src="/profile.webp"

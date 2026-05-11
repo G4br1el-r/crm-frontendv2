@@ -3,6 +3,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Color, MeshPhongMaterial } from "three";
+import { cn } from "@/lib/utils/twMerge";
 import { GlobeTooltip, type GlobeTooltipHandle } from "./GlobeTooltip";
 
 // ============================================
@@ -23,8 +24,10 @@ interface GlobeArc {
 
 interface Props {
   data: StateData[];
-  onStateClick?: (state: StateData) => void;
-  onReady?: () => void;
+  active: boolean;
+  onReady: () => void;
+  onStateClick?: (state: StateData | null) => void;
+  selectedStateId?: string | null;
 }
 
 // ============================================
@@ -166,7 +169,13 @@ const fetchGeoJson = async (url: string) => {
 // ============================================
 // COMPONENTE
 // ============================================
-export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
+export function BrazilGlobe({
+  data,
+  active,
+  onReady,
+  onStateClick,
+  selectedStateId = null,
+}: Props) {
   const globeRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<GlobeTooltipHandle>(null);
@@ -178,12 +187,14 @@ export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const readyFiredRef = useRef(false);
+  const introPlayedRef = useRef(false);
 
+  // Avisa o pai (uma vez) quando o globo está carregado e renderizado.
   useEffect(() => {
     if (readyFiredRef.current) return;
     if (!Globe || polygons.length === 0) return;
     readyFiredRef.current = true;
-    requestAnimationFrame(() => onReady?.());
+    requestAnimationFrame(() => onReady());
   }, [Globe, polygons.length, onReady]);
 
   const dataMap = useMemo(() => {
@@ -298,15 +309,17 @@ export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
   useEffect(() => {
     const globe = globeRef.current;
     if (!globe || !Globe) return;
-    if (polygons.length === 0) {
+    // Pausa o render loop enquanto carrega ou enquanto o globo está escondido.
+    if (polygons.length === 0 || !active) {
       globe.pauseAnimation?.();
     } else {
       globe.resumeAnimation?.();
     }
-  }, [Globe, polygons.length]);
+  }, [Globe, polygons.length, active]);
 
   useEffect(() => {
-    if (!globeRef.current || !Globe) return;
+    // Câmera/controles só são configurados quando o globo está visível.
+    if (!globeRef.current || !Globe || polygons.length === 0 || !active) return;
 
     const globe = globeRef.current;
     const controls = globe.controls();
@@ -343,7 +356,8 @@ export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
     controls.addEventListener("start", handleStart);
     controls.addEventListener("end", handleEnd);
 
-    if (INTRO.enabled) {
+    if (INTRO.enabled && !introPlayedRef.current) {
+      // Primeira entrada: câmera voa de longe até o Brasil.
       introActive = true;
       globe.pointOfView(
         {
@@ -360,9 +374,11 @@ export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
 
       liftTimeout = setTimeout(() => {
         introActive = false;
+        introPlayedRef.current = true;
         setStatesElevated(true);
       }, INTRO.duration + INTRO.liftDelay);
     } else {
+      // Reaberturas (ou intro desligada): aparece já no Brasil, sem animação.
       globe.pointOfView(finalView, 0);
     }
 
@@ -372,17 +388,14 @@ export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
       controls.removeEventListener("start", handleStart);
       controls.removeEventListener("end", handleEnd);
     };
-  }, [Globe]);
+  }, [Globe, polygons.length, active]);
 
   const polygonAltitude = useCallback(
     (feat: any) => {
       if (!feat.properties.isBrazilState) return POLYGON.worldAltitude;
-      if (!statesElevated) return POLYGON.worldAltitude;
-      return hoveredId === feat.properties.sigla
-        ? GLOBE.brazilLiftHover
-        : GLOBE.brazilLift;
+      return statesElevated ? GLOBE.brazilLift : POLYGON.worldAltitude;
     },
-    [statesElevated, hoveredId],
+    [statesElevated],
   );
 
   const polygonCapColor = useCallback(
@@ -392,13 +405,19 @@ export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
       const cached = polygonStyleCache.get(sigla);
       if (!cached) return COLORS.world;
 
+      if (selectedStateId === sigla) {
+        return `rgba(${COLORS.brazilHover.r}, ${COLORS.brazilHover.g}, ${COLORS.brazilHover.b}, 1)`;
+      }
+      if (selectedStateId !== null) {
+        return `rgba(${COLORS.brazil.r}, ${COLORS.brazil.g}, ${COLORS.brazil.b}, ${cached.alpha * 0.2})`;
+      }
       if (hoveredId === sigla) {
         const hoverAlpha = Math.min(cached.alpha + 0.2, 1);
         return `rgba(${COLORS.brazilHover.r}, ${COLORS.brazilHover.g}, ${COLORS.brazilHover.b}, ${hoverAlpha})`;
       }
       return cached.color;
     },
-    [polygonStyleCache, hoveredId],
+    [polygonStyleCache, hoveredId, selectedStateId],
   );
 
   const polygonSideColor = useCallback(
@@ -436,37 +455,54 @@ export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
       if (hoveredId === sigla) return;
 
       setHoveredId(sigla);
-      const value = dataMap.get(sigla) ?? 0;
-      tooltipRef.current?.show({
-        id: sigla,
-        name: feat.properties.name,
-        value,
-      });
+
+      if (selectedStateId === null) {
+        const value = dataMap.get(sigla) ?? 0;
+        tooltipRef.current?.show({
+          id: sigla,
+          name: feat.properties.name,
+          value,
+        });
+      }
 
       if (containerRef.current) {
         containerRef.current.style.cursor = "pointer";
       }
     },
-    [dataMap, hoveredId],
+    [dataMap, hoveredId, selectedStateId],
   );
 
   const handlePolygonClick = useCallback(
     (feat: any) => {
       if (!feat || !feat.properties.isBrazilState || !onStateClick) return;
       const sigla = feat.properties.sigla;
+
+      tooltipRef.current?.hide();
+      setHoveredId(null);
+
+      if (selectedStateId === sigla) {
+        onStateClick(null);
+        return;
+      }
       onStateClick({
         id: sigla,
         name: feat.properties.name,
         value: dataMap.get(sigla) ?? 0,
       });
     },
-    [dataMap, onStateClick],
+    [dataMap, onStateClick, selectedStateId],
   );
 
   if (!Globe) return null;
 
   return (
-    <div ref={containerRef} className="absolute h-full w-full">
+    <div
+      ref={containerRef}
+      className={cn(
+        "absolute h-full w-full transition-opacity duration-500",
+        active ? "opacity-100" : "pointer-events-none opacity-0",
+      )}
+    >
       <Globe
         ref={globeRef}
         width={dimensions.width}
@@ -481,7 +517,9 @@ export function BrazilGlobe({ data, onStateClick, onReady }: Props) {
         polygonCapColor={polygonCapColor}
         polygonSideColor={polygonSideColor}
         polygonStrokeColor={polygonStrokeColor}
-        polygonsTransitionDuration={INTRO.liftAnimationDuration}
+        polygonsTransitionDuration={
+          statesElevated ? 0 : INTRO.liftAnimationDuration
+        }
         onPolygonHover={handlePolygonHover}
         onPolygonClick={handlePolygonClick}
         arcsData={arcsData}

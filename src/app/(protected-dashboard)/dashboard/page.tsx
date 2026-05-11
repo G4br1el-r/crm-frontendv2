@@ -1,4 +1,4 @@
-import { DashboardShell } from "@/components/sections/Dashboard/DashboardShell";
+import { DashboardMain } from "@/components/sections/Dashboard/DashboardMain";
 
 const mockData = [
   { id: "SP", name: "São Paulo", value: 1450000 },
@@ -33,7 +33,7 @@ const mockData = [
 export default async function Dashboard() {
   return (
     <section className="relative h-full w-full overflow-hidden">
-      <DashboardShell data={mockData} />
+      <DashboardMain data={mockData} />
     </section>
   );
 }

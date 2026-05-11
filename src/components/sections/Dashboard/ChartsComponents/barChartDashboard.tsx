@@ -10,6 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import { motion } from "motion/react";
+import { ImageComponent } from "@/components/ui/Image";
 
 interface MonthRevenue {
   month: string;
@@ -27,7 +28,7 @@ const DATA: MonthRevenue[] = [
 
 const BAR_COLOR_START = "#00329e";
 const BAR_COLOR_END = "#05193c";
-const AXIS_TICK_COLOR = "#FFF";
+const AXIS_TICK_COLOR = "#ffffff99";
 
 type Props = {
   onGlobeExpand: () => void;
@@ -35,13 +36,15 @@ type Props = {
 
 export function BarChartDashboard({ onGlobeExpand }: Props) {
   return (
-    <div className="w-full h-full bg-blue-dark/50 backdrop-blur-xs rounded-[10px] py-2.5 px-5 pointer-events-auto flex flex-col gap-4">
-      <div className="flex items-center gap-2 justify-between">
-        <div className="flex-center gap-2">
-          <div className="bg-blue-neon/20 border border-blue-neon w-fit h-fit p-1 rounded-[5px]">
-            <Activity className="text-blue-neon p-1" />
+    <div className="w-full h-full bg-blue-dark/50 backdrop-blur-xs rounded-[10px] p-5 extraxl:px-5 extraxl:pt-5 extraxl:pb-0 pointer-events-auto flex flex-col gap-4 justify-between">
+      <div className="flex items-center gap-4 justify-between">
+        <div className="flex items-center gap-3">
+          <div className="bg-blue-neon/20 border border-blue-neon/50 w-fit h-fit p-1.5 rounded-lg shadow-[0_0_10px_rgba(0,50,158,0.2)]">
+            <Activity size={20} className="text-blue-neon" />
           </div>
-          <span className="text-white">Evolução Financeira</span>
+          <span className="text-white font-medium text-lg tracking-wide">
+            Evolução Financeira
+          </span>
         </div>
 
         <motion.button
@@ -49,19 +52,19 @@ export function BarChartDashboard({ onGlobeExpand }: Props) {
           onClick={onGlobeExpand}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-neon/40 bg-blue-neon/10 text-blue-neon text-sm backdrop-blur-sm hover:bg-blue-neon/20 transition-colors cursor-pointer group"
+          className="hidden extraxl:flex items-center gap-4 px-3 py-1.5 rounded-full border border-secondary-blue/40 bg-secondary-blue/10 text-secondary-blue text-sm backdrop-blur-sm hover:bg-secondary-blue/20 transition-colors cursor-pointer group"
         >
           <span className="animate-globe-wiggle inline-block">
-            <Globe size={15} className="text-blue-neon" />
+            <Globe size={15} className="text-secondary-blue" />
           </span>
           <span>Ver no Globo</span>
-          <span className="text-blue-neon/60 text-xs animate-arrow-nudge inline-block">
+          <span className="text-secondary-blue/60 text-xs animate-arrow-nudge inline-block">
             →
           </span>
         </motion.button>
       </div>
 
-      <div className="flex-1 min-h-0">
+      <div className="min-h-0 flex-1">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={DATA}

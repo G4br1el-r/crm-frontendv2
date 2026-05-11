@@ -10,7 +10,7 @@ export function Navbar() {
     <>
       <MobileNav />
 
-      <nav className="sm:w-13 extraxl:hover:w-50 extraxl:w-13 overflow-hidden py-4 h-dvh items-center justify-between group transition-all duration-200 fixed bg-background-main/50 extraxl:backdrop-blur-xs backdrop-blur-lg left-0 top-0 z-11 flex-col hidden xl:flex">
+      <nav className="sm:w-13 extraxl:hover:w-60 extraxl:w-14 overflow-hidden py-4 h-dvh items-center justify-between group transition-all duration-200 fixed bg-primary-blue-dark/30 backdrop-blur-lg left-0 top-0 z-11 flex-col hidden xl:flex">
         <div className="w-full h-full gap-10 flex flex-col">
           <div>
             <ImageComponent
@@ -23,7 +23,7 @@ export function Navbar() {
             <NavItems />
           </LayoutGroup>
         </div>
-        <div className="flex-center justify-start text-white cursor-pointer h-13 relative w-full ml-4 gap-2">
+        <div className="flex-center justify-start text-white cursor-pointer h-13 relative w-full ml-4 gap-4">
           <div className="w-11 h-11 shrink-0">
             <ImageComponent
               src="/profile.webp"
