@@ -46,7 +46,7 @@ const SALES: Sale[] = [
 ];
 
 const STATUS_LABELS: Record<SaleStatus, string> = {
-  completed: "SENDOTRM",
+  completed: "SENDTORM",
   cancelled: "CANCELADO",
 };
 

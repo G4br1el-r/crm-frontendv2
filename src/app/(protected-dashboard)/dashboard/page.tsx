@@ -1,3 +1,11 @@
+import { ActionButtonMenu } from "@/components/sections/Dashboard/ActionButtonMenu";
+import { BestCustomers } from "@/components/sections/Dashboard/ChartsComponents/bestCustomers";
+import { Kpi } from "@/components/sections/Dashboard/ChartsComponents/kpi";
+import { RecentSales } from "@/components/sections/Dashboard/ChartsComponents/recentSales";
+import { TopCustomerByState } from "@/components/sections/Dashboard/ChartsComponents/topCustomerByState";
+import { TopProducts } from "@/components/sections/Dashboard/ChartsComponents/topProducts";
+import { TopStateOrders } from "@/components/sections/Dashboard/ChartsComponents/topStateOrders";
+import { TopStateTicket } from "@/components/sections/Dashboard/ChartsComponents/topStateTicket";
 import { DashboardMain } from "@/components/sections/Dashboard/DashboardMain";
 
 const mockData = [
@@ -31,9 +39,52 @@ const mockData = [
 ];
 
 export default async function Dashboard() {
+  const kpis = [
+    <Kpi
+      key="receita-total"
+      title="Receita Total"
+      percent={58.32}
+      value={48321.49}
+      successDisplay
+      isMoney
+    />,
+    <Kpi
+      key="descontos-concedidos"
+      title="Descontos Concedidos"
+      percent={-67.7}
+      value={12808.42}
+      successDisplay
+      isMoney
+    />,
+    <Kpi
+      key="ticket-medio"
+      title="Ticket Médio"
+      percent={-108.7}
+      value={1184.63}
+      isMoney
+    />,
+    <Kpi
+      key="total-clientes"
+      title="Total de Clientes"
+      percent={7.7}
+      value={35}
+      successDisplay
+    />,
+  ];
+
+  const tables = [
+    // <RecentSales key="recent-sales" />,
+    // <TopProducts key="top-products" />,
+    // <BestCustomers key="best-customers" />,
+    <TopStateOrders key="top-state-orders" />,
+    <TopStateTicket key="top-state-ticket" />,
+    <TopCustomerByState key="top-customer-by-state" />,
+  ];
+
   return (
     <section className="relative h-full w-full overflow-hidden">
-      <DashboardMain data={mockData} />
+      <DashboardMain data={mockData} kpis={kpis} tables={tables} />
+      <ActionButtonMenu />
     </section>
   );
 }

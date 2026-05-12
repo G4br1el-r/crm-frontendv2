@@ -24,7 +24,7 @@ export function Kpi({
   const numberFormatted = isMoney ? formatBRL(value) : value;
 
   return (
-    <div className="min-h-40 w-full bg-blue-dark/50 backdrop-blur-xs xl:border-t-2 xl:border-t-blue-neon rounded-[10px] p-5 flex flex-col justify-between items-start overflow-hidden relative">
+    <div className="min-h-40 w-full bg-blue-dark/50 backdrop-blur-xs rounded-[10px] p-5 flex flex-col justify-between items-start overflow-hidden relative">
       <ImageComponent
         src={srcBackground}
         alt="Grafico"

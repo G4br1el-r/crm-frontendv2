@@ -15,12 +15,14 @@ interface StateData {
 
 interface Props {
   data: StateData[];
+  kpis: React.ReactNode[];
+  tables: React.ReactNode[];
 }
 
 const DASHBOARD_EXIT_MS = 400;
 const MIN_LOADER_MS = 650;
 
-export function DashboardMain({ data }: Props) {
+export function DashboardMain({ data, kpis, tables }: Props) {
   const [showGlobe, setShowGlobe] = useState(false);
   const [globeMounted, setGlobeMounted] = useState(false);
   const [globeReady, setGlobeReady] = useState(false);
@@ -96,6 +98,8 @@ export function DashboardMain({ data }: Props) {
         globeExpanded={showGlobe}
         onExpand={handleExpand}
         onCollapse={handleCollapse}
+        kpis={kpis}
+        tables={tables}
       />
 
       <AnimatePresence>
