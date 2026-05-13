@@ -2,10 +2,6 @@
 
 import { motion } from "motion/react";
 
-/**
- * Overlay de carregamento exibido na primeira vez que o globo é aberto.
- * Deve ser renderizado dentro de um <AnimatePresence> com uma `key`.
- */
 export function GlobeLoader() {
   return (
     <motion.div

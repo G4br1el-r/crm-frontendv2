@@ -1,4 +1,4 @@
-import { ActionButtonMenu } from "@/components/sections/Dashboard/ActionButtonMenu";
+import type { TablesData } from "@/@types/dashboar.types";
 import { BestCustomers } from "@/components/sections/Dashboard/ChartsComponents/bestCustomers";
 import { Kpi } from "@/components/sections/Dashboard/ChartsComponents/kpi";
 import { RecentSales } from "@/components/sections/Dashboard/ChartsComponents/recentSales";
@@ -6,7 +6,7 @@ import { TopCustomerByState } from "@/components/sections/Dashboard/ChartsCompon
 import { TopProducts } from "@/components/sections/Dashboard/ChartsComponents/topProducts";
 import { TopStateOrders } from "@/components/sections/Dashboard/ChartsComponents/topStateOrders";
 import { TopStateTicket } from "@/components/sections/Dashboard/ChartsComponents/topStateTicket";
-import { DashboardMain } from "@/components/sections/Dashboard/DashboardMain";
+import { DashboardWrapper } from "@/components/sections/Dashboard/DashboardWrapper";
 
 const mockData = [
   { id: "SP", name: "São Paulo", value: 1450000 },
@@ -72,19 +72,18 @@ export default async function Dashboard() {
     />,
   ];
 
-  const tables = [
-    // <RecentSales key="recent-sales" />,
-    // <TopProducts key="top-products" />,
-    // <BestCustomers key="best-customers" />,
-    <TopStateOrders key="top-state-orders" />,
-    <TopStateTicket key="top-state-ticket" />,
-    <TopCustomerByState key="top-customer-by-state" />,
+  const tables: TablesData[] = [
+    { view: "overview", component: <RecentSales /> },
+    { view: "overview", component: <TopProducts /> },
+    { view: "overview", component: <BestCustomers /> },
+    { view: "by-state", component: <TopStateOrders /> },
+    { view: "by-state", component: <TopStateTicket /> },
+    { view: "by-state", component: <TopCustomerByState /> },
   ];
 
   return (
     <section className="relative h-full w-full overflow-hidden">
-      <DashboardMain data={mockData} kpis={kpis} tables={tables} />
-      <ActionButtonMenu />
+      <DashboardWrapper data={mockData} kpis={kpis} tables={tables} />
     </section>
   );
 }

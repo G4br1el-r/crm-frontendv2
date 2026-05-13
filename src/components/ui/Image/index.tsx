@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils/twMerge";
 import Image from "next/image";
+import { cn } from "@/lib/utils/twMerge";
 
 interface ImageComponentProps {
   src: string;
@@ -10,10 +10,24 @@ interface ImageComponentProps {
   classNameWrapper?: string;
 }
 
-export function ImageComponent({ alt, src, classNameImg, classNameWrapper, priority, sizes }: ImageComponentProps) {
+export function ImageComponent({
+  alt,
+  src,
+  classNameImg,
+  classNameWrapper,
+  priority,
+  sizes,
+}: ImageComponentProps) {
   return (
     <div className={cn("relative w-full h-full", classNameWrapper)}>
-      <Image alt={alt} src={src} className={classNameImg} priority={priority} sizes={sizes} fill />
+      <Image
+        alt={alt}
+        src={src}
+        className={classNameImg}
+        priority={priority}
+        sizes={sizes}
+        fill
+      />
     </div>
   );
 }

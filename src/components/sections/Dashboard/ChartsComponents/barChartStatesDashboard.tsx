@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Activity, Globe } from "lucide-react";
 import {
   Bar,
@@ -9,7 +10,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { motion } from "framer-motion";
 
 interface StateRevenue {
   id: string;

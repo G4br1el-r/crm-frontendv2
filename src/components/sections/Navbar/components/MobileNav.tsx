@@ -1,10 +1,10 @@
 "use client";
 
-import { ImageComponent } from "@/components/ui/Image";
+import { LayoutGroup } from "framer-motion";
 import { MenuIcon, X } from "lucide-react";
 import { useState } from "react";
+import { ImageComponent } from "@/components/ui/Image";
 import { cn } from "@/lib/utils/twMerge";
-import { LayoutGroup } from "framer-motion";
 import { NavItems } from "./renderNav";
 
 export function MobileNav() {
@@ -12,7 +12,7 @@ export function MobileNav() {
 
   return (
     <>
-      <div className="w-full fixed z-11 h-15 bg-background-main/80 backdrop-blur-sm border-b border-blue-neon flex-center xl:hidden">
+      <div className="w-full fixed z-11 h-15 bg-background-content/90 backdrop-blur-sm border-b border-white/10 flex-center xl:hidden">
         <button
           className="absolute left-4 text-white"
           type="button"
@@ -43,7 +43,7 @@ export function MobileNav() {
         id="mobile-nav"
         className={cn(
           "fixed left-0 top-0 z-20 h-dvh w-full flex flex-col py-4 items-center justify-between",
-          "bg-background-main/50 backdrop-blur-lg transition-transform duration-300 ease-in-out xl:hidden",
+          "bg-background-content/90 border-r border-white/10 backdrop-blur-lg transition-transform duration-300 ease-in-out xl:hidden",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >

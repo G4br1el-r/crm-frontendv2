@@ -1,8 +1,8 @@
 "use client";
 
-import { InputComponent } from "@/components/ui/InputComponent";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { InputComponent } from "@/components/ui/InputComponent";
 
 export function LoginInputs() {
   const [showPassword, setShowPassword] = useState(false);

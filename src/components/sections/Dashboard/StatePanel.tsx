@@ -2,7 +2,10 @@
 
 import { motion } from "motion/react";
 import { FadeAnimation } from "@/components/ui/Motion/FadeAnimation";
-import { StaggerContainer, StaggerItem } from "@/components/ui/Motion/StaggerAnimation";
+import {
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/ui/Motion/StaggerAnimation";
 import { cn } from "@/lib/utils/twMerge";
 
 interface StateData {
@@ -47,15 +50,25 @@ export function StatePanel({ state, allData, onClose }: Props) {
       />
 
       <div className="absolute inset-x-0 bottom-20 z-10 flex flex-col items-center gap-3 px-6 pointer-events-none">
-        <FadeAnimation fadeDirection="up" fadeValue={8} transitionDuration={0.22}>
+        <FadeAnimation
+          fadeDirection="up"
+          fadeValue={8}
+          transitionDuration={0.22}
+        >
           <span className="text-white/40 text-sm font-mono tracking-widest uppercase">
             Estado selecionado
           </span>
         </FadeAnimation>
 
-        <FadeAnimation fadeDirection="up" fadeValue={12} transitionDuration={0.26}>
+        <FadeAnimation
+          fadeDirection="up"
+          fadeValue={12}
+          transitionDuration={0.26}
+        >
           <div className="flex items-center gap-3">
-            <h2 className="text-3xl font-bold text-white tracking-tight">{state.name}</h2>
+            <h2 className="text-3xl font-bold text-white tracking-tight">
+              {state.name}
+            </h2>
             <span className="px-3 py-1 rounded-full bg-secondary-blue/15 border border-secondary-blue/40 text-secondary-blue text-sm font-mono font-bold">
               {state.id}
             </span>
@@ -108,7 +121,13 @@ interface MetricCardProps {
   bar?: { value: number; max: number };
 }
 
-function MetricCard({ label, value, accent = "default", badge, bar }: MetricCardProps) {
+function MetricCard({
+  label,
+  value,
+  accent = "default",
+  badge,
+  bar,
+}: MetricCardProps) {
   return (
     <div
       className={cn(
@@ -142,7 +161,9 @@ function MetricCard({ label, value, accent = "default", badge, bar }: MetricCard
           <motion.div
             className="h-full rounded-full bg-secondary-blue/60"
             initial={{ width: 0 }}
-            animate={{ width: `${Math.min((bar.value / bar.max) * 100, 100)}%` }}
+            animate={{
+              width: `${Math.min((bar.value / bar.max) * 100, 100)}%`,
+            }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
           />
         </div>

@@ -9,7 +9,7 @@ export function ActivePageAnimation() {
       />
       <motion.div
         layoutId="active-bg"
-        className="absolute inset-0 bg-linear-to-r from-blue-neon/30 to-primary-blue-light"
+        className="absolute inset-0 bg-linear-to-r from-blue-neon/20 to-transparent"
       />
     </>
   );

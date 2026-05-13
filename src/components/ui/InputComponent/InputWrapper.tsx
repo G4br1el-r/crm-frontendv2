@@ -1,4 +1,4 @@
-import { iconMap, IconName } from "@/lib/utils/iconsMap";
+import { type IconName, iconMap } from "@/lib/utils/iconsMap";
 import { cn } from "@/lib/utils/twMerge";
 
 interface InputWrapperProps {

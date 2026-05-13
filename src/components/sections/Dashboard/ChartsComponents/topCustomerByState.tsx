@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <explanation> */
-import { Trophy, Medal } from "lucide-react";
+import { Medal, Trophy } from "lucide-react";
 import { formatBRL } from "@/lib/utils/format-currency";
 import { cn } from "@/lib/utils/twMerge";
 

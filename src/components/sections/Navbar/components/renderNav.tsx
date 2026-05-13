@@ -22,14 +22,16 @@ export function NavItems() {
         <Link href={item.link} key={key} aria-label={key}>
           <li
             className={cn(
-              "flex-center justify-start gap-5 text-white cursor-pointer transition-all duration-300 h-13 relative p-4",
+              "flex-center justify-start gap-5 text-white cursor-pointer transition-all duration-300 h-13 relative p-4 group/nav",
               activePage !== item.link && " hover:scale-105",
             )}
           >
             <item.icon
               className={cn(
-                "w-5 h-5 shrink-0 text-gray-light/50",
-                activePage === item.link && "text-blue-neon",
+                "w-5 h-5 shrink-0 transition-colors duration-200",
+                activePage === item.link
+                  ? "text-blue-neon"
+                  : "text-white/55 group-hover/nav:text-white",
               )}
               aria-hidden="true"
             />

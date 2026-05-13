@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils/twMerge";
 import { forwardRef } from "react";
+import { cn } from "@/lib/utils/twMerge";
 
 interface InputPasswordProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

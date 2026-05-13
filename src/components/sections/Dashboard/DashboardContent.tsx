@@ -1,22 +1,20 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import {
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/ui/Motion/StaggerAnimation";
+import { StaggerContainer } from "@/components/ui/Motion/StaggerAnimation";
 import { cn } from "@/lib/utils/twMerge";
-import { BarChartStatesDashboard } from "./ChartsComponents/barChartStatesDashboard";
-import { DonutChartDashboard } from "./ChartsComponents/donnutChartDashboard";
-import { BarChartDashboard } from "./ChartsComponents/barChartDashboard";
-import { RegionBarChartDashboard } from "./ChartsComponents/regionBarChartsDashboard";
+import { ChartsSection } from "./ChartsSection";
+import { KpiSection } from "./KpiSection";
+import { TableSection } from "./TableSection";
+import type { DashboardView, TablesData } from "@/@types/dashboar.types";
 
-interface Props {
+interface DashboardContentProps {
   globeExpanded: boolean;
   onExpand: () => void;
   onCollapse: () => void;
   kpis: React.ReactNode[];
-  tables: React.ReactNode[];
+  tables: TablesData[];
+  view: DashboardView;
 }
 
 export function DashboardContent({
@@ -25,7 +23,8 @@ export function DashboardContent({
   onCollapse,
   kpis,
   tables,
-}: Props) {
+  view,
+}: DashboardContentProps) {
   return (
     <div
       className={cn(
@@ -51,51 +50,9 @@ export function DashboardContent({
               delayChildren={0.2}
               className="flex gap-4 w-full h-full relative flex-col pointer-events-none"
             >
-              {/* KPI */}
-              <div className="flex-center gap-4 flex-center-column sm:grid sm:grid-cols-2 lg:grid-cols-4 pointer-events-none">
-                {kpis.map((kpi, i) => (
-                  <StaggerItem
-                    // biome-ignore lint/suspicious/noArrayIndexKey: lista estática de tamanho fixo
-                    key={i}
-                    fadeDirection="up"
-                    className="w-full pointer-events-auto"
-                  >
-                    {kpi}
-                  </StaggerItem>
-                ))}
-              </div>
-
-              {/* GRÁFICOS */}
-              <div className="w-full flex gap-4 flex-center-column flex-1 min-h-180 md:min-h-95 overflow-hidden pointer-events-none md:grid md:grid-cols-2 extraxl:grid-cols-3">
-                <StaggerItem
-                  fadeDirection="up"
-                  className="w-full h-full pointer-events-auto extraxl:col-span-2"
-                >
-                  {/* <BarChartDashboard  /> */}
-                  <BarChartStatesDashboard onGlobeExpand={onExpand} />
-                </StaggerItem>
-                <StaggerItem
-                  fadeDirection="up"
-                  className="w-full h-full pointer-events-auto"
-                >
-                  {/* <DonutChartDashboard /> */}
-                  <RegionBarChartDashboard />
-                </StaggerItem>
-              </div>
-
-              {/* TABELAS */}
-              <div className="w-full h-full flex gap-4 flex-center-column lg:grid lg:grid-cols-3 pointer-events-none">
-                {tables.map((table, i) => (
-                  <StaggerItem
-                    // biome-ignore lint/suspicious/noArrayIndexKey: lista estática de tamanho fixo
-                    key={i}
-                    fadeDirection="up"
-                    className="w-full h-full pointer-events-auto"
-                  >
-                    {table}
-                  </StaggerItem>
-                ))}
-              </div>
+              <KpiSection kpis={kpis} />
+              <ChartsSection view={view} onExpand={onExpand} />
+              <TableSection view={view} tables={tables} />
             </StaggerContainer>
           </motion.div>
         )}

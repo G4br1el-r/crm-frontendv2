@@ -28,7 +28,13 @@ interface Props {
   selectedStateId?: string | null;
 }
 
-export function BrazilGlobeClient({ data, active, onReady, onStateClick, selectedStateId }: Props) {
+export function BrazilGlobeClient({
+  data,
+  active,
+  onReady,
+  onStateClick,
+  selectedStateId,
+}: Props) {
   const isMobile = useIsMobile();
 
   // Mobile não monta o globo — libera o loading na hora
