@@ -7,10 +7,22 @@ interface InputLabelProps {
   classNameLabel?: string;
 }
 
-export function InputLabel({ label, htmlFor, readOnly, classNameLabel }: InputLabelProps) {
+export function InputLabel({
+  label,
+  htmlFor,
+  readOnly,
+  classNameLabel,
+}: InputLabelProps) {
   return (
     <label htmlFor={htmlFor}>
-      <span className={cn("font-bold transition-colors duration-300", classNameLabel)}>{label}</span>
+      <span
+        className={cn(
+          "font-bold transition-colors duration-300",
+          classNameLabel,
+        )}
+      >
+        {label}
+      </span>
     </label>
   );
 }
