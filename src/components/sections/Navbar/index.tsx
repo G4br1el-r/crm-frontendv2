@@ -1,9 +1,9 @@
 "use client";
 
 import { LayoutGroup } from "framer-motion";
-import { ImageComponent } from "@/components/ui/Image";
 import { MobileNav } from "./components/MobileNav";
 import { NavItems } from "./components/renderNav";
+import { ImageComponent } from "@/components/shared/Image";
 
 export function Navbar() {
   return (

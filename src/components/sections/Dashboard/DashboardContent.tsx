@@ -1,12 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { StaggerContainer } from "@/components/ui/Motion/StaggerAnimation";
 import { cn } from "@/lib/utils/twMerge";
 import { ChartsSection } from "./ChartsSection";
 import { KpiSection } from "./KpiSection";
 import { TableSection } from "./TableSection";
 import type { DashboardView, TablesData } from "@/@types/dashboar.types";
+import { StaggerContainer } from "@/components/shared/Motion/StaggerAnimation";
 
 interface DashboardContentProps {
   globeExpanded: boolean;
@@ -14,7 +14,6 @@ interface DashboardContentProps {
   onCollapse: () => void;
   kpis: React.ReactNode[];
   tables: TablesData[];
-  view: DashboardView;
 }
 
 export function DashboardContent({
@@ -23,7 +22,6 @@ export function DashboardContent({
   onCollapse,
   kpis,
   tables,
-  view,
 }: DashboardContentProps) {
   return (
     <div
@@ -50,9 +48,10 @@ export function DashboardContent({
               delayChildren={0.2}
               className="flex gap-4 w-full h-full relative flex-col pointer-events-none"
             >
+              {/* CONTEUDO */}
               <KpiSection kpis={kpis} />
-              <ChartsSection view={view} onExpand={onExpand} />
-              <TableSection view={view} tables={tables} />
+              <ChartsSection onExpand={onExpand} />
+              <TableSection tables={tables} />
             </StaggerContainer>
           </motion.div>
         )}

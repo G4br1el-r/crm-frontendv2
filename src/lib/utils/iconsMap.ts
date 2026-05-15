@@ -1,5 +1,4 @@
 import {
-  ChartNoAxesColumn,
   ChartNoAxesCombined,
   Eye,
   EyeClosed,
@@ -7,6 +6,8 @@ import {
   Lock,
   ShoppingBasket,
   User,
+  Info,
+  Trash,
 } from "lucide-react";
 
 export const iconMap = {
@@ -18,6 +19,8 @@ export const iconMap = {
   charts: ChartNoAxesCombined,
   bag: ShoppingBasket,
   headset: Headset,
+  info: Info,
+  trash: Trash,
 } as const;
 
 export type IconName = keyof typeof iconMap;

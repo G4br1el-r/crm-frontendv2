@@ -1,12 +1,9 @@
 "use client";
 
 import { motion } from "motion/react";
-import { FadeAnimation } from "@/components/ui/Motion/FadeAnimation";
-import {
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/ui/Motion/StaggerAnimation";
 import { cn } from "@/lib/utils/twMerge";
+import { FadeAnimation } from "@/components/shared/Motion/FadeAnimation";
+import { StaggerContainer, StaggerItem } from "@/components/shared/Motion/StaggerAnimation";
 
 interface StateData {
   id: string;
@@ -111,7 +108,6 @@ export function StatePanel({ state, allData, onClose }: Props) {
   );
 }
 
-// ─── MetricCard ────────────────────────────────────────────────────────────────
 
 interface MetricCardProps {
   label: string;
