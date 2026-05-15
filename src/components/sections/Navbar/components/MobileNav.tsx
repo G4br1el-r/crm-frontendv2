@@ -3,9 +3,9 @@
 import { LayoutGroup } from "framer-motion";
 import { MenuIcon, X } from "lucide-react";
 import { useState } from "react";
-import { ImageComponent } from "@/components/ui/Image";
 import { cn } from "@/lib/utils/twMerge";
 import { NavItems } from "./renderNav";
+import { ImageComponent } from "@/components/shared/Image";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);

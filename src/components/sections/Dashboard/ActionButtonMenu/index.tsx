@@ -5,23 +5,15 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils/twMerge";
 import { DashboardView } from "@/@types/dashboar.types";
+import { FiltersDashboard } from "./Filters";
 
-interface ActionButtonMenuProps {
-  view: DashboardView;
-  onChange: (view: DashboardView) => void;
-}
-
-const VIEWS: { value: DashboardView; label: string }[] = [
-  { value: "overview", label: "GERAL" },
-  { value: "by-state", label: "ESTADOS" },
-];
-
-export function ActionButtonMenu({ view, onChange }: ActionButtonMenuProps) {
+export function ActionButtonMenu() {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <>
       <AnimatePresence>
+        {/* BACKGROUND */}
         {expanded && (
           <motion.div
             key="backdrop"
@@ -30,7 +22,7 @@ export function ActionButtonMenu({ view, onChange }: ActionButtonMenuProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
             onClick={() => setExpanded(false)}
-            className="fixed inset-0 z-10 bg-background-main/50 backdrop-blur-sm"
+            className="fixed inset-0 z-11 bg-background-main/50 backdrop-blur-sm"
           />
         )}
       </AnimatePresence>
@@ -38,8 +30,8 @@ export function ActionButtonMenu({ view, onChange }: ActionButtonMenuProps) {
       <motion.div
         onClick={() => !expanded && setExpanded(true)}
         animate={{
-          width: expanded ? 240 : 48,
-          height: expanded ? 320 : 48,
+          width: expanded ? 270 : 48,
+          height: expanded ? "auto" : 48,
         }}
         transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
         whileHover={!expanded ? { scale: 1.1 } : undefined}
@@ -53,7 +45,9 @@ export function ActionButtonMenu({ view, onChange }: ActionButtonMenuProps) {
         )}
       >
         <AnimatePresence mode="wait" initial={false}>
-          {!expanded ? (
+          {expanded ? (
+            <FiltersDashboard />
+          ) : (
             <motion.div
               key="icon"
               initial={{ opacity: 0 }}
@@ -63,41 +57,6 @@ export function ActionButtonMenu({ view, onChange }: ActionButtonMenuProps) {
               className="flex items-center justify-center w-12 h-12 shrink-0"
             >
               <SlidersHorizontal className="text-white" />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15, delay: 0.15 }}
-              className="flex flex-col w-full h-full py-6 px-4 justify-center gap-2"
-            >
-              <div className="flex flex-col gap-2">
-                <p className="text-white/60 text-[10px] uppercase tracking-widest px-2 mb-1">
-                  Visualização
-                </p>
-                <div className="flex gap-2">
-                  {VIEWS.map(({ value, label }) => {
-                    const isActive = view === value;
-                    return (
-                      <button
-                        key={value}
-                        type="button"
-                        onClick={() => onChange(value)}
-                        className={cn(
-                          "w-full cursor-pointer text-left px-3 py-3 rounded-xs text-xs font-semibold tracking-widest uppercase transition-all duration-200",
-                          isActive
-                            ? "bg-secondary-blue text-background-main"
-                            : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white",
-                        )}
-                      >
-                        {label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>

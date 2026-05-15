@@ -1,18 +1,21 @@
 import { AnimatePresence, motion } from "motion/react";
-import { StaggerItem } from "@/components/ui/Motion/StaggerAnimation";
 import { BarChartDashboard } from "../ChartsComponents/barChartDashboard";
 import { BarChartStatesDashboard } from "../ChartsComponents/barChartStatesDashboard";
 import { DonutChartDashboard } from "../ChartsComponents/donnutChartDashboard";
 import { RegionBarChartDashboard } from "../ChartsComponents/regionBarChartsDashboard";
-import type { DashboardView } from "@/@types/dashboar.types";
+import { StaggerItem } from "@/components/shared/Motion/StaggerAnimation";
+import { useDashboardFilterStore } from "@/store/useDashboardFilter.store";
 
 interface ChartsSectionProps {
   onExpand: () => void;
-  view: DashboardView;
 }
 
-export function ChartsSection({ onExpand, view }: ChartsSectionProps) {
-  const isOverview = view === "overview";
+export function ChartsSection({ onExpand }: ChartsSectionProps) {
+  const viewDashboard = useDashboardFilterStore(
+    (state) => state.filtersActive.viewDashboard,
+  );
+  const isOverview = viewDashboard === "overview";
+
   return (
     <div className="w-full flex gap-4 flex-center-column flex-1 min-h-180 md:min-h-95 overflow-hidden pointer-events-none md:grid md:grid-cols-2 extraxl:grid-cols-3">
       <StaggerItem

@@ -1,6 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Noto_Sans } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+import { TooltipProvider } from "@/components/ui/tooltip";
+
+const playfairDisplayHeading = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
+
+const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair-display",
@@ -34,10 +43,16 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${playfairDisplay.variable} h-full antialiased`}
+      className={cn(
+        "h-full antialiased font-sans dark",
+        inter.variable,
+        playfairDisplay.variable,
+        notoSans.variable,
+        playfairDisplayHeading.variable,
+      )}
     >
       <body className="min-h-screen bg-background-main flex flex-col ">
-        {children}
+        <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: <explanation> */
 import { Medal, Trophy } from "lucide-react";
-import { formatBRL } from "@/lib/utils/format-currency";
+import { formatBRL } from "@/lib/utils/formatCurrency";
 import { cn } from "@/lib/utils/twMerge";
 
 type Tier = "gold" | "silver" | "bronze" | null;

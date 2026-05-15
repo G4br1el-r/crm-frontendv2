@@ -1,4 +1,4 @@
-import { WrapperContent } from "@/components/ui/WrapperContent";
+import { WrapperContent } from "@/components/shared/WrapperContent";
 
 export default function Sales() {
   return (

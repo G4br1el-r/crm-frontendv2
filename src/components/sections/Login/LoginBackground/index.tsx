@@ -1,7 +1,7 @@
 "use client";
 
+import { ImageComponent } from "@/components/shared/Image";
 import { useEffect, useRef, useState } from "react";
-import { ImageComponent } from "../../../ui/Image";
 
 export function LoginBackground() {
   const videoRef = useRef<HTMLVideoElement>(null);

@@ -1,4 +1,4 @@
-import { StaggerItem } from "@/components/ui/Motion/StaggerAnimation";
+import { StaggerItem } from "@/components/shared/Motion/StaggerAnimation";
 
 interface KpiSectionProps {
   kpis: React.ReactNode[];
