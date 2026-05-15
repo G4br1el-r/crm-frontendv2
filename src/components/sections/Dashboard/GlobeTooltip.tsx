@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { formatBRL } from "@/lib/utils/format-currency";
+import { formatBRL } from "@/lib/utils/formatCurrency";
 
 export interface GlobeTooltipHandle {
   show: (data: { id: string; name: string; value: number }) => void;

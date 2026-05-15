@@ -37,7 +37,6 @@ export function BrazilGlobeClient({
 }: Props) {
   const isMobile = useIsMobile();
 
-  // Mobile não monta o globo — libera o loading na hora
   useEffect(() => {
     if (isMobile) onReady();
   }, [isMobile, onReady]);

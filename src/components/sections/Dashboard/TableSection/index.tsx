@@ -1,13 +1,16 @@
 import { AnimatePresence, motion } from "motion/react";
 import type { DashboardView, TablesData } from "@/@types/dashboar.types";
-import { StaggerItem } from "@/components/ui/Motion/StaggerAnimation";
+import { StaggerItem } from "@/components/shared/Motion/StaggerAnimation";
+import { useDashboardFilterStore } from "@/store/useDashboardFilter.store";
 
 interface TableSectionProps {
-  view: DashboardView;
   tables: TablesData[];
 }
 
-export function TableSection({ tables, view }: TableSectionProps) {
+export function TableSection({ tables }: TableSectionProps) {
+  const viewDashboard = useDashboardFilterStore(
+    (state) => state.filtersActive.viewDashboard,
+  );
   return (
     <StaggerItem
       fadeDirection="up"
@@ -15,7 +18,7 @@ export function TableSection({ tables, view }: TableSectionProps) {
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
-          key={view}
+          key={viewDashboard}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
@@ -23,7 +26,7 @@ export function TableSection({ tables, view }: TableSectionProps) {
           className="w-full h-full flex gap-4 flex-center-column lg:grid lg:grid-cols-3 pointer-events-none"
         >
           {tables
-            .filter((table) => table.view === view)
+            .filter((table) => table.view === viewDashboard)
             .map((table, i) => (
               <div key={i} className="w-full h-full pointer-events-auto">
                 {table.component}

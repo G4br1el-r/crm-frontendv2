@@ -1,6 +1,6 @@
-import { ImageComponent } from "@/components/ui/Image";
-import { FadeAnimation } from "@/components/ui/Motion/FadeAnimation";
+import { FadeAnimation } from "@/components/shared/Motion/FadeAnimation";
 import { LoginInputs } from "../LoginInputs";
+import { ImageComponent } from "@/components/shared/Image";
 
 export function LoginWrapper() {
   return (

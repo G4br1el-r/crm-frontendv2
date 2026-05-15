@@ -1,5 +1,5 @@
-import { ImageComponent } from "@/components/ui/Image";
-import { formatBRL } from "@/lib/utils/format-currency";
+import { ImageComponent } from "@/components/shared/Image";
+import { formatBRL } from "@/lib/utils/formatCurrency";
 import { cn } from "@/lib/utils/twMerge";
 
 interface KpiProps {

@@ -2,11 +2,7 @@
 
 import { AnimatePresence } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type {
-  DashboardView,
-  StateData,
-  TablesData,
-} from "@/@types/dashboar.types";
+import type { StateData, TablesData } from "@/@types/dashboar.types";
 import { BrazilGlobeClient } from "./BrazilGlobeClient";
 import { DashboardContent } from "./DashboardContent";
 import { GlobeLoader } from "./GlobeLoader";
@@ -17,15 +13,9 @@ interface DashboardMainProps {
   data: StateData[];
   kpis: React.ReactNode[];
   tables: TablesData[];
-  view: DashboardView;
 }
 
-export function DashboardMain({
-  data,
-  kpis,
-  tables,
-  view,
-}: DashboardMainProps) {
+export function DashboardMain({ data, kpis, tables }: DashboardMainProps) {
   const [showGlobe, setShowGlobe] = useState(false);
   const [globeMounted, setGlobeMounted] = useState(false);
   const [globeReady, setGlobeReady] = useState(false);
@@ -103,7 +93,6 @@ export function DashboardMain({
         onCollapse={handleCollapse}
         kpis={kpis}
         tables={tables}
-        view={view}
       />
 
       <AnimatePresence>

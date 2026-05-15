@@ -1,4 +1,5 @@
 import type { TablesData } from "@/@types/dashboar.types";
+import { ActionButtonMenu } from "@/components/sections/Dashboard/ActionButtonMenu";
 import { BestCustomers } from "@/components/sections/Dashboard/ChartsComponents/bestCustomers";
 import { Kpi } from "@/components/sections/Dashboard/ChartsComponents/kpi";
 import { RecentSales } from "@/components/sections/Dashboard/ChartsComponents/recentSales";
@@ -6,7 +7,7 @@ import { TopCustomerByState } from "@/components/sections/Dashboard/ChartsCompon
 import { TopProducts } from "@/components/sections/Dashboard/ChartsComponents/topProducts";
 import { TopStateOrders } from "@/components/sections/Dashboard/ChartsComponents/topStateOrders";
 import { TopStateTicket } from "@/components/sections/Dashboard/ChartsComponents/topStateTicket";
-import { DashboardWrapper } from "@/components/sections/Dashboard/DashboardWrapper";
+import { DashboardMain } from "@/components/sections/Dashboard/DashboardMain";
 
 const mockData = [
   { id: "SP", name: "São Paulo", value: 1450000 },
@@ -83,7 +84,8 @@ export default async function Dashboard() {
 
   return (
     <section className="relative h-full w-full overflow-hidden">
-      <DashboardWrapper data={mockData} kpis={kpis} tables={tables} />
+      <DashboardMain data={mockData} kpis={kpis} tables={tables} />
+      <ActionButtonMenu />
     </section>
   );
 }
