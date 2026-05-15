@@ -1,4 +1,4 @@
-import { iconMap, IconName } from "@/lib/utils/iconsMap";
+import { type IconName, iconMap } from "@/lib/utils/iconsMap";
 import { cn } from "@/lib/utils/twMerge";
 
 interface InputWrapperProps {
@@ -8,8 +8,7 @@ interface InputWrapperProps {
   showPassword?: boolean;
   classNameWrapper?: string;
   classNameIcon?: string;
-
-  onShowPassword?: (value: boolean) => void;
+  onShowPassword?: () => void;
   onSubmitIcon?: () => void;
 }
 
@@ -27,7 +26,12 @@ export function InputWrapper({
   const IconPassword = iconMap[showPassword ? "eye" : "eyeClose"];
 
   return (
-    <div className={cn("w-full h-10 px-3 py-1 flex gap-3 items-center transition-all duration-300", classNameWrapper)}>
+    <div
+      className={cn(
+        "w-full h-10 px-3 py-1 flex gap-3 items-center transition-all duration-300",
+        classNameWrapper,
+      )}
+    >
       {Icon && onSubmitIcon ? (
         <button
           type="button"
@@ -35,16 +39,19 @@ export function InputWrapper({
           aria-label="Pesquisar"
           className="flex items-center justify-center shrink-0"
         >
-          <Icon className={cn("w-5 h-5 ", classNameIcon)} />
+          <Icon className={cn("w-5 h-5", classNameIcon)} />
         </button>
       ) : Icon ? (
-        <Icon aria-hidden="true" className={cn("w-5 h-5 shrink-0 ", classNameIcon)} />
+        <Icon
+          aria-hidden="true"
+          className={cn("w-5 h-5 shrink-0", classNameIcon)}
+        />
       ) : null}
       {children}
-      {isPassword && Icon ? (
+      {isPassword && IconPassword ? (
         <IconPassword
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => onShowPassword?.(!showPassword)}
+          onMouseDown={(e: { preventDefault: () => any }) => e.preventDefault()}
+          onClick={() => onShowPassword?.()}
           aria-hidden="true"
           className={cn("w-5 h-5 shrink-0 cursor-pointer", classNameIcon)}
         />

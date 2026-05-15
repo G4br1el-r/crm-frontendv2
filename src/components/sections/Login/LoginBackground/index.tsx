@@ -8,8 +8,10 @@ export function LoginBackground() {
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    if (window.innerWidth < 728) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (window.innerWidth < 1280) return;
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (prefersReduced) return;
     setIsDesktop(true);
   }, []);
@@ -31,7 +33,7 @@ export function LoginBackground() {
   return (
     <>
       <ImageComponent
-        classNameWrapper="lg:hidden absolute h-full"
+        classNameWrapper="xl:hidden absolute h-full"
         src={"/login/background-mobile.webp"}
         priority
         alt=""
@@ -43,11 +45,11 @@ export function LoginBackground() {
           muted
           loop
           playsInline
-          className="hidden lg:block absolute inset-0 w-full h-full object-fill"
+          className="hidden xl:block absolute inset-0 w-full h-full object-fill"
         />
       )}
 
-      <div className="w-full md:h-dvh h-full absolute inset-0 bg-linear-to-l from-background-main via-background-main/90 to-background-main/80" />
+      <div className="w-full md:h-dvh h-full absolute inset-0 bg-linear-to-l from-background-main via-background-main/50 to-background-main/30" />
     </>
   );
 }
